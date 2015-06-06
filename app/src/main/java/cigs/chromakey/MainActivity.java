@@ -1,17 +1,24 @@
 package cigs.chromakey;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.regex.Pattern;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -20,6 +27,54 @@ public class MainActivity extends ActionBarActivity {
     final static int CAPTURE_IMAGE_REQUEST_CODE = 1;
 
     private Handler mHandler;
+
+    private static Account getAccount(AccountManager accountManager) {
+        Account[] accounts = accountManager.getAccountsByType("com.google");
+        Account account;
+        if (accounts.length > 0) {
+            account = accounts[0];
+        } else {
+            account = null;
+        } return account;
+    }
+
+    private String getUserEmail(Context context) {
+        Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
+        Account[] accounts = AccountManager.get(context).getAccounts();
+        String email = "";
+        for (Account account : accounts) {
+            if (emailPattern.matcher(account.name).matches()) {
+                email = account.name;
+                break;
+            }
+        }
+        return email;
+    }
+
+
+    public void composeEmail(String[] addresses, String subject, String text) {
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        intent.setType("application/image");
+        Uri uri = Uri.parse("@drawable/hp_banner.jpg");
+        Toast.makeText(getApplicationContext(), "XXXXXXXXXXXXXXXXXXXX"+uri, Toast.LENGTH_SHORT);
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX"+uri);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+
+        try {
+          if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+          }
+        } catch (android.content.ActivityNotFoundException ex){
+            Toast.makeText(MainActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +106,8 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-
+       String[] emails = {getUserEmail(getApplicationContext())};
+       composeEmail(emails,"HP Chroma photo stand", "HP Chroma photo stand");
 
     }
 
@@ -77,7 +133,6 @@ public class MainActivity extends ActionBarActivity {
             }
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
