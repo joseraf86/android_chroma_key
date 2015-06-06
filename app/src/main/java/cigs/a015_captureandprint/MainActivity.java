@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -81,6 +82,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         mHandler = new Handler();
+        //System.out.println("////////////////////////// HOLA //////////////////////");
 
         setContentView(R.layout.main);
 
