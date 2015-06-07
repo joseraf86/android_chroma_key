@@ -62,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
         intent.setType("application/image");
         Uri uri = Uri.parse("@drawable/hp_banner.jpg");
         Toast.makeText(getApplicationContext(), "XXXXXXXXXXXXXXXXXXXX"+uri, Toast.LENGTH_SHORT);
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX"+uri);
+
         intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         try {
