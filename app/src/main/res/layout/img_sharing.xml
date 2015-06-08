@@ -1,25 +1,17 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    tools:context=".CameraPhotoCapture"
-    android:background="@drawable/hp_banner">
-
-    <LinearLayout
-        android:id="@+id/header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    android:id="@+id/sharing_header"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context="cigs.chromakey.SharingActivity" tools:ignore="MergeRootFrame" >
 
         <ImageView
-            android:id="@+id/banner"
+            android:id="@+id/res_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             />
-    </LinearLayout>
 
+</LinearLayout>
 
-
-
-</RelativeLayout>

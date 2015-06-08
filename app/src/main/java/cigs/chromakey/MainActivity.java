@@ -1,47 +1,30 @@
 package cigs.chromakey;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
+
+
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Patterns;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.util.regex.Pattern;
 
-public class MainActivity extends ActionBarActivity {
+
+public class MainActivity extends AppCompatActivity {
 
     Uri imageUri = null;
     final static int CAPTURE_IMAGE_REQUEST_CODE = 1;
 
     private Handler mHandler;
 
-    private String getUserEmail(Context context) {
-        Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
-        Account[] accounts = AccountManager.get(context).getAccounts();
-        String email = "";
-        for (Account account : accounts) {
-            if (emailPattern.matcher(account.name).matches()) {
-                email = account.name;
-                break;
-            }
-        }
-        return email;
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,22 +53,6 @@ public class MainActivity extends ActionBarActivity {
                 startActivityForResult( intent, CAPTURE_IMAGE_REQUEST_CODE);
             }
         });
-
-        // Enviar correo al usuario
-        String[] emails = {getUserEmail(getApplicationContext())};
-        // Cambiar esta imagen a la foto imgUri
-        Uri uri = Uri.parse("android.resource://" +
-                             getPackageName() + "/" +
-                             R.drawable.hp_banner);
-
-        Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", uri, this);
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.hp_banner);
-       DIP dip = new DIP(bmp, bmp, 1,1,1);
-        for (int i = 0; i < 255; i++) {
-            int pixel = dip.getPixel(i, i);
-            Log.i("MAinActivity:81", Color.red(pixel) + ", " + Color.green(pixel) + ", " + Color.blue(pixel));
-        }
-
     }
 
     // Respuesta asincrona de startActivityForResult

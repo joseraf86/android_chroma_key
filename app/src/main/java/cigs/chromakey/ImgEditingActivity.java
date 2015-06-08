@@ -3,11 +3,12 @@ package cigs.chromakey;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
-import android.os.Parcelable;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,12 +20,13 @@ import android.widget.Toast;
 import java.io.FileNotFoundException;
 
 
-public class ImgEditingActivity extends ActionBarActivity
+public class ImgEditingActivity extends AppCompatActivity
             implements View.OnClickListener
 {
 
     ImageView imgView, bgView;
     MenuItem btnSave;
+    Uri imageUri = null;
 
     private ActionMode mActionMode;
     private Handler mHandler;
@@ -41,27 +43,29 @@ public class ImgEditingActivity extends ActionBarActivity
 
         Intent i = getIntent();
         Bundle extras = i.getExtras();
+        Bitmap mBitmap;
 
-        if(extras !=null) {
-
-            Parcelable rtrv_value = extras.getParcelable("image");
-
-            try{
-                Bitmap mBitmap = BitmapFactory.decodeStream(
-                        getContentResolver().openInputStream( (Uri)rtrv_value ));
-                //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
-                imgView.setImageBitmap(mBitmap);
-            }
-            catch(FileNotFoundException e){}
-
-            // add save button
-            bgView = (ImageView) findViewById(R.id.imageView);
-            bgView.setOnClickListener(this);
-
-           // btnSave = (MenuItem) findViewById(R.id.save);
-           // btnSave.setOnMenuItemClickListener(this);
-
+        imageUri = (Uri)extras.getParcelable("image");
+        try{
+            mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+            imgView.setImageBitmap(mBitmap);
+            //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
         }
+        catch(FileNotFoundException e){}
+
+        // add save button
+        bgView = (ImageView) findViewById(R.id.imageView);
+        bgView.setOnClickListener(this);
+
+       // btnSave = (MenuItem) findViewById(R.id.save);
+       // btnSave.setOnMenuItemClickListener(this);
+
+        Bitmap fg_img = BitmapFactory.decodeResource(getResources(), R.drawable.hp_banner);
+        Bitmap bg_img = BitmapFactory.decodeResource(getResources(), R.drawable.hp_banner);
+
+
+
+        DIP dip = new DIP(bmp, bmp, 1,1,1);
 
     }
 
@@ -72,7 +76,7 @@ public class ImgEditingActivity extends ActionBarActivity
         if (mActionMode != null) {
             return;
         }
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAa");
+
         // Start the CAB
         mActionMode = this.startActionMode(new ActionBarCallBack()); //
         view.setSelected(true);
@@ -123,14 +127,14 @@ public class ImgEditingActivity extends ActionBarActivity
         // 5. Called when the user click share item
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX");
-            //Toa.makeText(ImgEditingActivity.this, "joder!", Toast.LENGTH_SHORT).show();
+            Log.i(ImgEditingActivity.class.getName(), "XXXXXXXXXXXXXXXXXXXXXXXXXX");
+
             switch (item.getItemId()) {
                 case R.id.save:
                     //
-                    mHandler.postDelayed(mLaunchLevel2Task,0);
+                    mHandler.postDelayed(mLaunchLevel2Task, 0);
                     mode.finish(); // Action picked, so close the CAB
-                    Toast.makeText(ImgEditingActivity.this, "Shared!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ImgEditingActivity.this, "Shared!", Toast.LENGTH_SHORT).show();
                     return true;
                 default:
                     Toast.makeText(ImgEditingActivity.this, "no", Toast.LENGTH_SHORT).show();
@@ -156,10 +160,8 @@ public class ImgEditingActivity extends ActionBarActivity
     private Runnable mLaunchLevel2Task = new Runnable() {
         public void run() {
 
-            //Bundle bundle = new Bundle();
-            //bundle.putParcelable("image", imageUri);
-
             Intent myIntent = new Intent(ImgEditingActivity.this, SharingActivity.class);
+            myIntent.putExtra("res_image", imageUri);
             ImgEditingActivity.this.startActivity(myIntent);
 
         }
