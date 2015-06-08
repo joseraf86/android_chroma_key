@@ -6,8 +6,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +20,7 @@ import android.widget.Toast;
 import java.io.FileNotFoundException;
 
 
-public class ImgEditingActivity extends ActionBarActivity
+public class ImgEditingActivity extends AppCompatActivity
             implements View.OnClickListener
 {
 
@@ -124,7 +125,7 @@ public class ImgEditingActivity extends ActionBarActivity
         // 5. Called when the user click share item
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX");
+            Log.i(ImgEditingActivity.class.getName(), "XXXXXXXXXXXXXXXXXXXXXXXXXX");
             //Toa.makeText(ImgEditingActivity.this, "joder!", Toast.LENGTH_SHORT).show();
             switch (item.getItemId()) {
                 case R.id.save:

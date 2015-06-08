@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
@@ -21,7 +21,7 @@ import android.widget.Toast;
 import java.util.regex.Pattern;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     Uri imageUri = null;
     final static int CAPTURE_IMAGE_REQUEST_CODE = 1;
