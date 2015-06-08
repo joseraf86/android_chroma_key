@@ -44,7 +44,7 @@ public class ImgEditingActivity extends ActionBarActivity
 
         mHandler = new Handler();
 
-// set photo
+        // set photo
         imgView = (ImageView) findViewById(R.id.image);
 
         Intent i = getIntent();
@@ -62,8 +62,7 @@ public class ImgEditingActivity extends ActionBarActivity
             }
             catch(FileNotFoundException e){}
 
-// add save button
-
+            // add save button
             bgView = (ImageView) findViewById(R.id.imageView);
             bgView.setOnClickListener(this);
 
