@@ -1,4 +1,4 @@
-package cigs.a015_captureandprint;
+package cigs.chromakey;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

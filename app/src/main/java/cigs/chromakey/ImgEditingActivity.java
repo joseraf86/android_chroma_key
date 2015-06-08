@@ -1,6 +1,5 @@
-package cigs.a015_captureandprint;
+package cigs.chromakey;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,19 +7,12 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.ActionMode;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -80,7 +72,7 @@ public class ImgEditingActivity extends ActionBarActivity
         if (mActionMode != null) {
             return;
         }
-
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAa");
         // Start the CAB
         mActionMode = this.startActionMode(new ActionBarCallBack()); //
         view.setSelected(true);
@@ -96,7 +88,7 @@ public class ImgEditingActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_img_editing, menu);
+        //getMenuInflater().inflate(R.menu.menu_img_editing, menu);
         return true;
     }
 
@@ -115,13 +107,6 @@ public class ImgEditingActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private Runnable mLaunchLevel2Task = new Runnable() {
-        public void run() {
-            Intent myIntent = new Intent(ImgEditingActivity.this, SharingActivity.class);
-            ImgEditingActivity.this.startActivity(myIntent);
-        }
-    };
-
     // menu contextual al seleccionar un fondo
     class ActionBarCallBack implements ActionMode.Callback {
 
@@ -138,14 +123,17 @@ public class ImgEditingActivity extends ActionBarActivity
         // 5. Called when the user click share item
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            //Toast.makeText(ImgEditingActivity.this, "joder!", Toast.LENGTH_SHORT).show();
+            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX");
+            //Toa.makeText(ImgEditingActivity.this, "joder!", Toast.LENGTH_SHORT).show();
             switch (item.getItemId()) {
                 case R.id.save:
-                    Toast.makeText(ImgEditingActivity.this, "Shared!", Toast.LENGTH_SHORT).show();
-                    // mHandler.postDelayed(mLaunchLevel1Task,0);
+                    //
+                    mHandler.postDelayed(mLaunchLevel2Task,0);
                     mode.finish(); // Action picked, so close the CAB
+                    Toast.makeText(ImgEditingActivity.this, "Shared!", Toast.LENGTH_SHORT).show();
                     return true;
                 default:
+                    Toast.makeText(ImgEditingActivity.this, "no", Toast.LENGTH_SHORT).show();
                     return false;
             }
         }
@@ -165,7 +153,7 @@ public class ImgEditingActivity extends ActionBarActivity
 
     }
 
-    private Runnable mLaunchLevel1Task = new Runnable() {
+    private Runnable mLaunchLevel2Task = new Runnable() {
         public void run() {
 
             //Bundle bundle = new Bundle();

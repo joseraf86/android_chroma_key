@@ -2,13 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="cigs.a015_captureandprint.ImgEditingActivity" tools:ignore="MergeRootFrame" >
+    tools:context="cigs.chromakey.ImgEditingActivity" tools:ignore="MergeRootFrame" >
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="#333333"
+        android:background="#000033"
         android:id="@+id/image"/>
 
     <HorizontalScrollView
