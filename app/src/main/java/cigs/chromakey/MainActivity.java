@@ -28,18 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Handler mHandler;
 
-    private String getUserEmail(Context context) {
-        Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
-        Account[] accounts = AccountManager.get(context).getAccounts();
-        String email = "";
-        for (Account account : accounts) {
-            if (emailPattern.matcher(account.name).matches()) {
-                email = account.name;
-                break;
-            }
-        }
-        return email;
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +57,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult( intent, CAPTURE_IMAGE_REQUEST_CODE);
             }
         });
-
-       // Enviar correo al usuario
-       String[] emails = {getUserEmail(getApplicationContext())};
-       // Cambiar esta imagen a la foto imgUri
-       Uri uri = Uri.parse("android.resource://"+
-                   getPackageName()+"/"+
-                   R.drawable.hp_banner);
-       Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", uri, this);
 
     }
 
