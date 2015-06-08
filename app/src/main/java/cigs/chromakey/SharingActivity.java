@@ -1,5 +1,10 @@
 package cigs.chromakey;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -8,22 +13,46 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import java.io.FileNotFoundException;
 
 
-public class SharingActivity extends ActionBarActivity {
+public class SharingActivity extends Activity {
+
+    ImageView imgView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.img_sharing);
 
-    }
+        imgView = (ImageView) findViewById(R.id.res_image);
 
+        Intent i = getIntent();
+        Bundle extras = i.getExtras();
+        Bitmap mBitmap = null;
+
+        Uri imageUri = (Uri)Utils.getParcelableFromBundle( extras );
+
+        try{
+            mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+            imgView.setImageBitmap(mBitmap);
+            //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
+        }
+        catch(FileNotFoundException e){}
+
+        // set photo
+        imgView = (ImageView) findViewById(R.id.res_image);
+        imgView.setImageBitmap(mBitmap);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_sharing, menu);
+
         return true;
     }
 
