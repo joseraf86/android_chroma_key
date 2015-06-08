@@ -37,7 +37,7 @@ public class ImgEditingActivity extends AppCompatActivity
 
         mHandler = new Handler();
 
-// set photo
+        // set photo
         imgView = (ImageView) findViewById(R.id.image);
 
         Intent i = getIntent();
@@ -55,8 +55,7 @@ public class ImgEditingActivity extends AppCompatActivity
             }
             catch(FileNotFoundException e){}
 
-// add save button
-
+            // add save button
             bgView = (ImageView) findViewById(R.id.imageView);
             bgView.setOnClickListener(this);
 

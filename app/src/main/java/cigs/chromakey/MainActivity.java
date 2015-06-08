@@ -28,16 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Handler mHandler;
 
-    private static Account getAccount(AccountManager accountManager) {
-        Account[] accounts = accountManager.getAccountsByType("com.google");
-        Account account;
-        if (accounts.length > 0) {
-            account = accounts[0];
-        } else {
-            account = null;
-        } return account;
-    }
-
     private String getUserEmail(Context context) {
         Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
         Account[] accounts = AccountManager.get(context).getAccounts();
@@ -51,44 +41,17 @@ public class MainActivity extends AppCompatActivity {
         return email;
     }
 
-
-    public void composeEmail(String[] addresses, String subject, String text) {
-
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_TEXT, text);
-        intent.setType("application/image");
-        Uri uri = Uri.parse("@drawable/hp_banner.jpg");
-        Toast.makeText(getApplicationContext(), "XXXXXXXXXXXXXXXXXXXX"+uri, Toast.LENGTH_SHORT);
-
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-
-        try {
-          if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-          }
-        } catch (android.content.ActivityNotFoundException ex){
-            Toast.makeText(MainActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mHandler = new Handler();
-        //System.out.println("////////////////////////// HOLA //////////////////////");
 
         setContentView(R.layout.main);
 
-
         final Button boton = (Button) findViewById(R.id.btn_capture);
         boton.setOnClickListener(new View.OnClickListener() {
-            /** Tomar foto */
+            // Tomar foto
             public void onClick(View v) {
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.TITLE, "prueba.jpg");
@@ -106,27 +69,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+       // Enviar correo al usuario
        String[] emails = {getUserEmail(getApplicationContext())};
-       composeEmail(emails,"HP Chroma photo stand", "HP Chroma photo stand");
+       // Cambiar esta imagen a la foto imgUri
+       Uri uri = Uri.parse("android.resource://"+
+                   getPackageName()+"/"+
+                   R.drawable.hp_banner);
+       Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", uri, this);
 
     }
 
-    // respuesta asincrona de startActivityForResult
+    // Respuesta asincrona de startActivityForResult
     @Override
-    protected void onActivityResult( int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult( int requestCode, int resultCode, Intent data)  {
         if ( requestCode == CAPTURE_IMAGE_REQUEST_CODE) {
-
             if ( resultCode == RESULT_OK) {
-
-                //
-
                 mHandler.postDelayed(mLaunchLevel1Task,0);
-
             } else if ( resultCode == RESULT_CANCELED) {
-
                 //Toast.makeText(this, " Picture was not taken ", Toast.LENGTH_SHORT).show();
-
             } else {
 
                 Toast.makeText(this, " Picture was not taken ", Toast.LENGTH_SHORT).show();
@@ -152,21 +112,16 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     private Runnable mLaunchLevel1Task = new Runnable() {
         public void run() {
-
             //Bundle bundle = new Bundle();
             //bundle.putParcelable("image", imageUri);
-
             Intent myIntent = new Intent(MainActivity.this, ImgEditingActivity.class);
             myIntent.putExtra("image", imageUri);
             MainActivity.this.startActivity(myIntent);
-
-
 
         }
     };
