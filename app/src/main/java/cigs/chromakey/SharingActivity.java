@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,7 +24,7 @@ import java.io.FileNotFoundException;
 import java.util.regex.Pattern;
 
 
-public class SharingActivity extends Activity {
+public class SharingActivity extends AppCompatActivity {
 
     ImageView imgView;
 
