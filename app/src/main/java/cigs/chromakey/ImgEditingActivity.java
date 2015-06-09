@@ -60,12 +60,18 @@ public class ImgEditingActivity extends AppCompatActivity
        // btnSave = (MenuItem) findViewById(R.id.save);
        // btnSave.setOnMenuItemClickListener(this);
 
-        Bitmap fg_img = BitmapFactory.decodeResource(getResources(), R.drawable.hp_banner);
-        Bitmap bg_img = BitmapFactory.decodeResource(getResources(), R.drawable.hp_banner);
+        Bitmap fg_img = BitmapFactory.decodeResource( getResources(), R.drawable.foreground_3 );
+        Bitmap bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_1 );
+        Bitmap cp_fg_img = Bitmap.createScaledBitmap( fg_img, 800, 1200, false );
+        Bitmap cp_bg_img = Bitmap.createScaledBitmap( bg_img, 800, 1200, false );
 
+        DIP dip = new DIP(cp_fg_img, cp_bg_img, 20, 50, -16668620);
 
+        //Log.i("Edit:: tolerancia :", ""+Color.rgb(0,255,0)+"> "+Color.rgb(0,204,0)+"> "+Color.rgb(0,153,0));
 
-        DIP dip = new DIP(bmp, bmp, 1,1,1);
+        dip.chromaKey();
+
+        imgView.setImageBitmap(cp_fg_img);
 
     }
 

@@ -22,6 +22,7 @@ public class DIP {
     // Chroma Key ( Green or Blue color)
     int chroma_key;
 
+    /***/
     public DIP (Bitmap fg, Bitmap bg, int tola, int tolb, int chroma_key){
         this.fg = fg;
         this.bg = bg;
@@ -30,16 +31,8 @@ public class DIP {
         this.chroma_key = chroma_key;
     }
 
-    public int getPixel(int x, int y) {
-        return fg.getPixel(x, y);
-    }
-
-    public void putPixel(int x, int y, int pixel){
-        fg.setPixel(x, y, pixel);
-    }
-
     /** A utility function to convert colors in RGB into YCbCr */
-    public int rgb2y (int r, int g, int b)
+    public static int rgb2y (int r, int g, int b)
     {
         int y;
         y = (int) Math.round(0.299 * r + 0.587 * g + 0.114 * b);
@@ -47,7 +40,7 @@ public class DIP {
     }
 
     /** A utility function to convert colors in RGB into YCbCr */
-    public int rgb2cb (int r, int g, int b)
+    public static int rgb2cb (int r, int g, int b)
     {
         int cb;
         cb = (int) Math.round(128 + -0.168736 * r - 0.331264 * g + 0.5 * b);
@@ -55,7 +48,7 @@ public class DIP {
     }
 
     /** A utility function to convert colors in RGB into YCbCr */
-    public int rgb2cr (int r, int g, int b)
+    public static int rgb2cr (int r, int g, int b)
     {
         int cr;
         cr = (int) Math.round(128 + 0.5 * r - 0.418688 * g - 0.081312 * b);
@@ -63,54 +56,55 @@ public class DIP {
     }
 
     /** Decides if a color is close to the specified hue */
-    public double colorClose(int Cb_p,
-                                    int Cr_p,
-                                    int Cb_key,
-                                    int Cr_key)
+    private double colorClose(  int cb_p,       int cr_p,
+                                int cb_key,     int cr_key   )
     {
-        double temp = Math.sqrt((Cb_key - Cb_p) * (Cb_key - Cb_p) + (Cr_key - Cr_p) * (Cr_key - Cr_p));
-        if (temp < tola) {return (0.0);}
-        if (temp < tolb) {return ((temp-tola)/(tolb-tola));}
+        double distance = Math.sqrt((cb_key - cb_p) * (cb_key - cb_p) + (cr_key - cr_p) * (cr_key - cr_p));
+        //Log.i("DIP:: distance :", ""+distance);
+        if (distance < tola) {return (0.0);}
+        if (distance < tolb) {return ((distance-tola)/(tolb-tola));}
         return (1.0);
     }
 
-    /* Chroma Key Algorithm */
+    /** Chroma Key Algorithm */
     public void chromaKey() {
-
-        // Get cb and cr of key color
-        int cb_key = rgb2cb(Color.red(chroma_key),
-                             Color.green(chroma_key),
-                             Color.blue(chroma_key));
-        Log.i("DIP: cbk: ", "("+")"+cb_key);
-        int cr_key = rgb2cr(Color.red(chroma_key),
-                Color.green(chroma_key),
-                Color.blue(chroma_key));
-        Log.i("DIP: crk: ", "("+")"+cr_key);
         double mask;
         int final_pixel;
+        int cb_key, cr_key;
+
+        // Get cb and cr of key color
+        cb_key = rgb2cb( Color.red(chroma_key),
+                         Color.green(chroma_key),
+                         Color.blue(chroma_key));
+        cr_key = rgb2cr(Color.red(chroma_key),
+                        Color.green(chroma_key),
+                        Color.blue(chroma_key));
+        Log.i("DIP:: cbk, crk :", ""+cb_key+", "+cr_key);
+        //Log.i("DIP:: fg.getWidth()", ""+fg.getWidth());
+//
         // for each i,j get Cb and Cr for pixel value
-        for(int i=1; i< fg.getWidth(); i++) {
-            for(int j=i; i< fg.getHeight(); i++) {
+        for(int i=0; i < fg.getWidth(); i++) {
+            for(int j=0; j < fg.getHeight(); j++) {
                 // Get cb and cr of each pixel
                 int cb_p = rgb2cb(Color.red(fg.getPixel(i,j)),
                                   Color.green(fg.getPixel(i,j)),
                                   Color.blue(fg.getPixel(i,j)));
-                Log.i("DIP: cb (i,j): ", "("+i+","+j+")"+cb_p);
 
                 int cr_p = rgb2cr(Color.red(fg.getPixel(i,j)),
                                   Color.green(fg.getPixel(i,j)),
                                   Color.blue(fg.getPixel(i,j)));
-                Log.i("DIP: cr (i,j): ", "("+i+","+j+")"+cr_p);
+                //Log.i("DIP:: c/ i,j cb, cr: ", "("+i+","+j+")"+cb_p+", "+cr_p);
 
                 mask = colorClose(cb_p, cr_p, cb_key, cr_key);
+                //if ( i==20 && j == 400) Log.i("DIP:: color :", ""+fg.getPixel(i,j));
                 mask = 1.0 - mask;
                 final_pixel = (int) Math.round( fg.getPixel(i,j) - mask*chroma_key + bg.getPixel(i,j)*mask );
-                fg.setPixel(i, j, final_pixel);
-                Log.i("DIP: px res (i,j): ", "("+i+","+j+")"+final_pixel);
+                fg.setPixel(i, j, (int) final_pixel ); // final_pixel
+                //Log.i("DIP: px res (i,j): ", "("+i+","+j+""+final_pixel);
             }
         }
 
-
+        Log.i("DIP: chromakey ", "DONE!!!!!!");
         /*
         int pos, mx;
         int r,g,b, r_bg, g_bg, b_bg;
