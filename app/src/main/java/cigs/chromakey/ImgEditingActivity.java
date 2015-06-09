@@ -59,7 +59,11 @@ public class ImgEditingActivity extends AppCompatActivity
         bgView = (ImageView) findViewById(R.id.imageView);
         bgView.setOnClickListener(this);
 
+        bgView = (ImageView) findViewById(R.id.imageView2);
+        bgView.setOnClickListener(this);
 
+        bgView = (ImageView) findViewById(R.id.imageView3);
+        bgView.setOnClickListener(this);
 
 
 /*
