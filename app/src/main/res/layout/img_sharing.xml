@@ -13,5 +13,17 @@
             android:layout_centerVertical="true"
             />
 
+    <Button
+        android:id="@+id/btn_print"
+        android:text="Imprimir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+            android:id="@+id/btn_email"
+            android:text="Enviar a Correo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
 </LinearLayout>
 

@@ -4,10 +4,12 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.v4.print.PrintHelper;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -18,15 +20,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.FileNotFoundException;
 import java.util.regex.Pattern;
 
 
-public class SharingActivity extends AppCompatActivity {
+public class SharingActivity extends AppCompatActivity
+    implements View.OnClickListener {
 
     ImageView imgView;
+    Button btnEmail, btnPrint;
+    PrintHelper printer;
 
     private String getUserEmail(Context context) {
         Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
@@ -45,6 +51,10 @@ public class SharingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.img_sharing);
+
+        // preparar printer
+        printer = new PrintHelper(this);
+        printer.setScaleMode(PrintHelper.SCALE_MODE_FIT);
 
         imgView = (ImageView) findViewById(R.id.res_image);
 
@@ -65,17 +75,36 @@ public class SharingActivity extends AppCompatActivity {
         imgView = (ImageView) findViewById(R.id.res_image);
         imgView.setImageBitmap(mBitmap);
 
+        btnEmail = (Button) findViewById(R.id.btn_email);
+        btnEmail.setOnClickListener(this);
 
-        // Enviar correo al usuario
-        String[] emails = {getUserEmail(getApplicationContext())};
-        // Cambiar esta imagen a la foto imgUri
-        Uri uri = Uri.parse("android.resource://"+
-                getPackageName()+"/"+
-                R.drawable.hp_banner);
-        Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", uri, this);
+        btnPrint = (Button) findViewById(R.id.btn_print);
+        btnPrint.setOnClickListener(this);
 
     }
 
+    public void onClick (View v)
+    {
+        if (v.getId() == R.id.btn_print) {
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_save);
+
+            printer.printBitmap("droids.jpg - test print", bitmap);
+            return;
+        }
+
+        if (v.getId() == R.id.btn_email) {
+            // Enviar correo al usuario
+            String[] emails = {getUserEmail(getApplicationContext())};
+
+            // Cambiar esta imagen a la foto imgUri
+            Uri uri = Uri.parse("android.resource://" +
+                    getPackageName() + "/" +
+                    R.drawable.hp_banner);
+            Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", uri, this);
+            return;
+        }
+
+    }
 
 
     @Override

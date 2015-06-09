@@ -57,21 +57,34 @@ public class ImgEditingActivity extends AppCompatActivity
         bgView = (ImageView) findViewById(R.id.imageView);
         bgView.setOnClickListener(this);
 
-       // btnSave = (MenuItem) findViewById(R.id.save);
-       // btnSave.setOnMenuItemClickListener(this);
 
-        Bitmap fg_img = BitmapFactory.decodeResource( getResources(), R.drawable.foreground_3 );
+
+        Bitmap fg_img = BitmapFactory.decodeResource( getResources(), R.drawable.foreground_2 );
         Bitmap bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_1 );
         Bitmap cp_fg_img = Bitmap.createScaledBitmap( fg_img, 800, 1200, false );
         Bitmap cp_bg_img = Bitmap.createScaledBitmap( bg_img, 800, 1200, false );
 
-        DIP dip = new DIP(cp_fg_img, cp_bg_img, 20, 50, -16668620);
+        DIP dip = new DIP(cp_fg_img, cp_bg_img, 60, 62, Color.rgb(17,168,75));
+
+        if (cp_fg_img.getWidth() != cp_bg_img.getWidth() ||
+                cp_fg_img.getWidth() != cp_bg_img.getWidth() )
+            Toast.makeText(getApplicationContext(), "la resolucion de la camara no coincide con el del fondo", Toast.LENGTH_SHORT);
+        else {
+            dip.chromaKey();
+
+            imgView.setImageBitmap(cp_fg_img);
+        }
+/*
+        int rojo = Color.red(-16668620); 0,168,54
+        int verde = Color.green(-16668620);
+        int azul = Color.blue(-16668620);
+
+        Log.i("Edit::", ""+rojo+"> "+verde+"> "+azul);
+*/
 
         //Log.i("Edit:: tolerancia :", ""+Color.rgb(0,255,0)+"> "+Color.rgb(0,204,0)+"> "+Color.rgb(0,153,0));
 
-        dip.chromaKey();
 
-        imgView.setImageBitmap(cp_fg_img);
 
     }
 

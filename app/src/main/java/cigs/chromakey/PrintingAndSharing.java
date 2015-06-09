@@ -23,7 +23,7 @@ public class PrintingAndSharing {
     }
     private void doPhotoPrint() {
 
-        Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), R.drawable.chin);
+        Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), R.drawable.ic_action_save);
 
         printer.printBitmap("droids.jpg - test print", bitmap);
     }

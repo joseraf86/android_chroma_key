@@ -60,7 +60,7 @@ public class DIP {
                                 int cb_key,     int cr_key   )
     {
         double distance = Math.sqrt((cb_key - cb_p) * (cb_key - cb_p) + (cr_key - cr_p) * (cr_key - cr_p));
-        //Log.i("DIP:: distance :", ""+distance);
+
         if (distance < tola) {return (0.0);}
         if (distance < tolb) {return ((distance-tola)/(tolb-tola));}
         return (1.0);
@@ -82,6 +82,7 @@ public class DIP {
         Log.i("DIP:: cbk, crk :", ""+cb_key+", "+cr_key);
         //Log.i("DIP:: fg.getWidth()", ""+fg.getWidth());
 //
+        String colorcloses = "";
         // for each i,j get Cb and Cr for pixel value
         for(int i=0; i < fg.getWidth(); i++) {
             for(int j=0; j < fg.getHeight(); j++) {
@@ -97,11 +98,49 @@ public class DIP {
 
                 mask = colorClose(cb_p, cr_p, cb_key, cr_key);
                 //if ( i==20 && j == 400) Log.i("DIP:: color :", ""+fg.getPixel(i,j));
+                //colorcloses += mask + ", ";
                 mask = 1.0 - mask;
-                final_pixel = (int) Math.round( fg.getPixel(i,j) - mask*chroma_key + bg.getPixel(i,j)*mask );
-                fg.setPixel(i, j, (int) final_pixel ); // final_pixel
+
+                int pxout_red, pxout_green, pxout_blue;
+
+                if (mask == 1) {
+                    fg.setPixel(i, j, bg.getPixel(i,j) );
+                }else{
+                    if (mask == 0) {
+
+                    }else{
+                        /*fg.setPixel(i, j, fg.getPixel(i,j) );
+                        pxout_red    = (int) ( Color.red(fg.getPixel(i,j))
+                                               - mask*Color.red(chroma_key)
+                                               + mask*Color.red(bg.getPixel(i,j))
+                        );
+                        pxout_green  = (int) ( Color.green(fg.getPixel(i,j))
+                                - mask*Color.green(chroma_key)
+                                + mask*Color.green(bg.getPixel(i,j))
+                        );
+                        pxout_blue   = (int) ( Color.blue(fg.getPixel(i,j))
+                                - mask*Color.blue(chroma_key)
+                                + mask*Color.blue(bg.getPixel(i,j))
+                        );
+                        /*
+                        pxout_red    = (int) ( Math.max( Color.red(fg.getPixel(i,j)) - mask*Color.red(chroma_key), 0)
+
+                                + Color.red(bg.getPixel(i,j))*mask );
+                        pxout_green  = (int) ( Math.max( Color.green(fg.getPixel(i,j)) - mask*Color.green(chroma_key), 0)
+                                + Color.green(bg.getPixel(i,j))*mask );
+                        pxout_blue   = (int) ( Math.max( Color.blue(fg.getPixel(i,j)) - mask*Color.blue(chroma_key), 0)
+                                + Color.blue(bg.getPixel(i,j))*mask );
+                        */
+                        //fg.setPixel(i, j, Color.rgb(pxout_red, pxout_green, pxout_blue) ); // final_pixel
+                    }
+                }
+
+                // final_pixel = (int) Math.round( fg.getPixel(i,j) - mask*chroma_key + bg.getPixel(i,j)*mask );
+
                 //Log.i("DIP: px res (i,j): ", "("+i+","+j+""+final_pixel);
             }
+
+            //Log.i("DIP:: distances :", i+""+colorcloses);
         }
 
         Log.i("DIP: chromakey ", "DONE!!!!!!");
