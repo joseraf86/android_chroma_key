@@ -3,7 +3,9 @@ package cigs.chromakey;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Bundle;
@@ -57,23 +59,6 @@ public class ImgEditingActivity extends AppCompatActivity
         bgView = (ImageView) findViewById(R.id.imageView);
         bgView.setOnClickListener(this);
 
-
-
-        Bitmap fg_img = BitmapFactory.decodeResource( getResources(), R.drawable.foreground_2_low );
-        Bitmap bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_1 );
-        Bitmap cp_fg_img = Bitmap.createScaledBitmap( fg_img, 200, 300, false );
-        Bitmap cp_bg_img = Bitmap.createScaledBitmap( bg_img, 200, 300, false );
-
-        DIP dip = new DIP(cp_fg_img, cp_bg_img, 60, 62, Color.rgb(17,168,75));
-
-        if (cp_fg_img.getWidth() != cp_bg_img.getWidth() ||
-                cp_fg_img.getWidth() != cp_bg_img.getWidth() )
-            Toast.makeText(getApplicationContext(), "la resolucion de la camara no coincide con el del fondo", Toast.LENGTH_SHORT);
-        else {
-            dip.chromaKey();
-
-            imgView.setImageBitmap(cp_fg_img);
-        }
 /*
         int rojo = Color.red(-16668620); 0,168,54
         int verde = Color.green(-16668620);
@@ -99,14 +84,65 @@ public class ImgEditingActivity extends AppCompatActivity
         // Start the CAB
         mActionMode = this.startActionMode(new ActionBarCallBack()); //
         view.setSelected(true);
-/*
-        if(view.getId()==findViewById(R.id.imageView).getId())
+
+        //if( view.getId() == findViewById(R.id.imageView).getId())
+
+        if (view instanceof ImageView)
         {
+            ImageView tmp = (ImageView) view;
+            Bitmap bg_img;
+
+            //Bitmap bgBitmap = convertToBitmap( tmp.getDrawable(), view.getWidth(), view.getHeight() );
+            switch (view.getId()){
+
+                case R.drawable.background_1:
+                default:
+                    bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_1 );
+                    break;
+
+            }
+
+
+            Bitmap fg_img, cp_fg_img = null; // = BitmapFactory.decodeResource( getResources(), R.drawable.foreground_2 );
+
+            // TODO:
+            try{
+                fg_img = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                cp_fg_img = Bitmap.createScaledBitmap( fg_img, 300, 400, false );
+
+
+                //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
+            }
+            catch(FileNotFoundException e){}
+
+            Bitmap cp_bg_img = Bitmap.createScaledBitmap( bg_img, 300, 400, false );
+
+            DIP dip = new DIP(cp_fg_img, cp_bg_img, 60, 62, Color.rgb(17,168,75));
+
+            if ( cp_fg_img.getWidth() != cp_bg_img.getWidth() ||
+                    cp_fg_img.getWidth() != cp_bg_img.getWidth() )
+                Toast.makeText(getApplicationContext(), "la resolucion de la camara no coincide con el del fondo", Toast.LENGTH_SHORT);
+            else {
+
+                dip.chromaKey();
+
+                // mostrar resultado
+                imgView.setImageBitmap(cp_fg_img);
+            }
+
 
         }
-        */
+        /* */
      }
 
+    public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
+        Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(mutableBitmap);
+        drawable.setBounds(0, 0, widthPixels, heightPixels);
+        drawable.draw(canvas);
+
+        return mutableBitmap;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

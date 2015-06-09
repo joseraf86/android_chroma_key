@@ -5,8 +5,8 @@
     tools:context="cigs.chromakey.ImgEditingActivity" tools:ignore="MergeRootFrame" >
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="#000033"
         android:id="@+id/image"/>
@@ -25,7 +25,7 @@
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
                 android:id="@+id/imageView"
-                android:src="#ffff41ba"
+                android:src="@drawable/background_1"
                 android:layout_alignParentTop="true" />
 
             <ImageView
