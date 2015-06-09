@@ -59,6 +59,12 @@ public class ImgEditingActivity extends AppCompatActivity
         bgView = (ImageView) findViewById(R.id.imageView);
         bgView.setOnClickListener(this);
 
+        bgView = (ImageView) findViewById(R.id.imageView2);
+        bgView.setOnClickListener(this);
+
+        bgView = (ImageView) findViewById(R.id.imageView3);
+        bgView.setOnClickListener(this);
+
 /*
         int rojo = Color.red(-16668620); 0,168,54
         int verde = Color.green(-16668620);
@@ -95,9 +101,17 @@ public class ImgEditingActivity extends AppCompatActivity
             //Bitmap bgBitmap = convertToBitmap( tmp.getDrawable(), view.getWidth(), view.getHeight() );
             switch (view.getId()){
 
-                case R.drawable.background_1:
+                case R.drawable.thumbnail_1:
+
+                    bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
+                    break;
+                case R.drawable.background_1_tmp:
+
+                    bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_1_tmp);
+                    break;
+                case R.drawable.thumbnail_3:
                 default:
-                    bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_1 );
+                    bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_3);
                     break;
 
             }
