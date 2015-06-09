@@ -53,16 +53,16 @@ public class ImgEditingActivity extends AppCompatActivity
         }
         catch(FileNotFoundException e){}
 
-        // add save button
+        // Add save button
         bgView = (ImageView) findViewById(R.id.imageView);
         bgView.setOnClickListener(this);
 
 
 
-        Bitmap fg_img = BitmapFactory.decodeResource( getResources(), R.drawable.foreground_2 );
+        Bitmap fg_img = BitmapFactory.decodeResource( getResources(), R.drawable.foreground_2_low );
         Bitmap bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_1 );
-        Bitmap cp_fg_img = Bitmap.createScaledBitmap( fg_img, 800, 1200, false );
-        Bitmap cp_bg_img = Bitmap.createScaledBitmap( bg_img, 800, 1200, false );
+        Bitmap cp_fg_img = Bitmap.createScaledBitmap( fg_img, 200, 300, false );
+        Bitmap cp_bg_img = Bitmap.createScaledBitmap( bg_img, 200, 300, false );
 
         DIP dip = new DIP(cp_fg_img, cp_bg_img, 60, 62, Color.rgb(17,168,75));
 
