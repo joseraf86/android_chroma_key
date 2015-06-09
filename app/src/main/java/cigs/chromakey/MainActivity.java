@@ -4,6 +4,7 @@ package cigs.chromakey;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Camera;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Handler mHandler;
 
-
+    Camera camera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
