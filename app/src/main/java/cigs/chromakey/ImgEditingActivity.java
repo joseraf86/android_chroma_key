@@ -44,7 +44,8 @@ public class ImgEditingActivity extends AppCompatActivity
     Uri imageUri = null; // captured photo
     Bitmap bg_img, cp_bg_img = null;
     Bitmap fg_img, cp_fg_img = null;
-    Bitmap dipped_img;
+    Bitmap mBitmap, dipped_img;
+    Bitmap bgs[] = new Bitmap[10];
 
 
     @Override
@@ -62,7 +63,6 @@ public class ImgEditingActivity extends AppCompatActivity
 
         Intent i = getIntent();
         Bundle extras = i.getExtras();
-        Bitmap mBitmap;
 
         // Colocar foto tomada en pantalla
         try {
@@ -72,6 +72,11 @@ public class ImgEditingActivity extends AppCompatActivity
             //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
         }
         catch(FileNotFoundException e){}
+
+        // cargar fondos
+        bgs[0] = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
+        bgs[1] = BitmapFactory.decodeResource( getResources(), R.drawable.background_2);
+        bgs[2] = BitmapFactory.decodeResource( getResources(), R.drawable.background_3);
 
         // activar oyentes para cada thumbnail
         bgView = (ImageView) findViewById(R.id.thumbnail_1);
@@ -105,29 +110,22 @@ public class ImgEditingActivity extends AppCompatActivity
         if (view instanceof ImageView)
         {
             // Se define foreground como la foto capturada
-            try{
-                fg_img = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-
-
-
-                //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
-            }
-            catch(FileNotFoundException e){}
+            fg_img = mBitmap;
 
             // Obtener fondo seleccionado
             switch (view.getId()) {
 
                 case R.id.thumbnail_1:
-                    bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
+                    bg_img = bgs[0];
                     break;
                 case R.id.thumbnail_2:
-                    bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_2);
+                    bg_img = bgs[1];
                     break;
                 case R.id.thumbnail_3:
-                    bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_3);
+                    bg_img = bgs[2];
                     break;
                 default:
-                    bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_2);
+                    bg_img = bgs[0];
                     break;
             }
 
@@ -186,10 +184,6 @@ public class ImgEditingActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

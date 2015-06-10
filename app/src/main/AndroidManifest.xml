@@ -27,7 +27,7 @@
         </activity>
         <activity
             android:name="cigs.chromakey.ImgEditingActivity"
-            android:label="@string/title_activity_img_editing" >
+            android:label="@string/title_img_editing" >
         </activity>
         <activity
             android:name="cigs.chromakey.SharingActivity"
