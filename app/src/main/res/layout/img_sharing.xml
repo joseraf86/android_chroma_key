@@ -1,3 +1,7 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sharing_header"
@@ -5,12 +9,12 @@
     android:orientation="vertical"
     tools:context="cigs.chromakey.SharingActivity" tools:ignore="MergeRootFrame" >
 
-        <ImageView
-            android:id="@+id/res_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            />
+    <ImageView
+        android:id="@+id/res_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        />
 
     <Button
         android:id="@+id/btn_print"
@@ -31,3 +35,4 @@
             android:layout_height="wrap_content" />
 </LinearLayout>
 
+</ScrollView>

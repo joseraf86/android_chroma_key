@@ -37,6 +37,7 @@ public class SharingActivity extends AppCompatActivity
     Uri imageUri;
 
     private String getUserEmail(Context context) {
+
         Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
         Account[] accounts = AccountManager.get(context).getAccounts();
         String email = "";
@@ -54,7 +55,7 @@ public class SharingActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.img_sharing);
 
-        // preparar printer
+        // Preparar printer
         printer = new PrintHelper(this);
         printer.setScaleMode(PrintHelper.SCALE_MODE_FIT);
 
@@ -81,7 +82,7 @@ public class SharingActivity extends AppCompatActivity
 
         btnPrint = (Button) findViewById(R.id.btn_print);
         btnPrint.setOnClickListener(this);
-
+        
         btnShare = (Button) findViewById(R.id.btn_share);
         btnShare.setOnClickListener(this);
 
