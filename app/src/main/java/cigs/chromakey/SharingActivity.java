@@ -33,6 +33,8 @@ public class SharingActivity extends AppCompatActivity
     ImageView imgView;
     Button btnEmail, btnPrint;
     PrintHelper printer;
+    Bitmap mBitmap;
+    Uri imageUri;
 
     private String getUserEmail(Context context) {
         Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
@@ -60,9 +62,7 @@ public class SharingActivity extends AppCompatActivity
 
         Intent i = getIntent();
         Bundle extras = i.getExtras();
-        Bitmap mBitmap = null;
-
-        Uri imageUri = (Uri)Utils.getParcelableFromBundle( extras );
+        imageUri = (Uri)Utils.getParcelableFromBundle( extras );
 
         try{
             mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
@@ -86,9 +86,7 @@ public class SharingActivity extends AppCompatActivity
     public void onClick (View v)
     {
         if (v.getId() == R.id.btn_print) {
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_save);
-
-            printer.printBitmap("droids.jpg - test print", bitmap);
+            printer.printBitmap("HP stand muestra", mBitmap);
             return;
         }
 
@@ -97,10 +95,8 @@ public class SharingActivity extends AppCompatActivity
             String[] emails = {getUserEmail(getApplicationContext())};
 
             // Cambiar esta imagen a la foto imgUri
-            Uri uri = Uri.parse("android.resource://" +
-                    getPackageName() + "/" +
-                    R.drawable.hp_banner);
-            Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", uri, this);
+            // Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.hp_banner);
+            Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", imageUri, this);
             return;
         }
 
