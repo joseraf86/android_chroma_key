@@ -134,7 +134,8 @@ public class ImgEditingActivity extends AppCompatActivity
                 dip.chromaKey();
 
                 // mostrar resultado
-                imgView.setImageBitmap(cp_fg_img);
+                cp_bg_img = Bitmap.createScaledBitmap( cp_bg_img, view.getWidth(), view.getHeight(), false );
+                //imgView.setImageBitmap(cp_fg_img);
             }
 
 
