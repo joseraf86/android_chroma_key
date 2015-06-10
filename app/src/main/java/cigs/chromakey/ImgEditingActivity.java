@@ -99,7 +99,17 @@ public class ImgEditingActivity extends AppCompatActivity
         // evento sobre imagen del slider
         if (view instanceof ImageView)
         {
-            // obtener fondo seleccionado
+            // Se define foreground como la foto capturada
+            try{
+                fg_img = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+
+
+
+                //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
+            }
+            catch(FileNotFoundException e){}
+
+            // Obtener fondo seleccionado
             switch (view.getId()) {
 
                 case R.id.thumbnail_1:
@@ -116,18 +126,11 @@ public class ImgEditingActivity extends AppCompatActivity
                     break;
             }
 
-            // se define foreground como la foto capturada
-            try{
-                fg_img = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-                cp_fg_img = Bitmap.createScaledBitmap( fg_img, 400, 500, false );
-                cp_bg_img = Bitmap.createScaledBitmap( bg_img, 400, 500, false );
+            fg_img = Bitmap.createScaledBitmap( fg_img, bg_img.getWidth(), bg_img.getHeight(), false );
+            cp_fg_img = Bitmap.createScaledBitmap( fg_img, 400, 500, false );
+            cp_bg_img = Bitmap.createScaledBitmap( bg_img, 400, 500, false );
 
-                //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
-            }
-            catch(FileNotFoundException e){}
-
-
-            // comprobar dimensiones
+            // Comprobar dimensiones
             if ( cp_fg_img.getWidth()  != cp_bg_img.getWidth() ||
                     cp_fg_img.getHeight() != cp_bg_img.getHeight() ) {
                 Toast.makeText(getApplicationContext(), "la resolucion de la camara no coincide con el del fondo", Toast.LENGTH_SHORT);
@@ -135,11 +138,11 @@ public class ImgEditingActivity extends AppCompatActivity
                 return;
             }
 
-            // procesar imagenes para vista previa
+            // Procesar imagenes para vista previa
 
             dip.chromaKey(cp_fg_img, cp_bg_img);
 
-            // mostrar resultado en vista previa
+            // Mostrar resultado en vista previa
             dipped_img = Bitmap.createScaledBitmap( cp_fg_img, view.getWidth(), view.getHeight(), false );
             imgView.setImageBitmap(dipped_img);
 
@@ -235,14 +238,15 @@ public class ImgEditingActivity extends AppCompatActivity
     private Runnable mLaunchLevel2Task = new Runnable() {
         public void run() {
 
-            // procesar imagenes con resolucion real
-            // dip.chromaKey(cp_fg_img, cp_bg_img);
+        // Procesar imagenes con resolucion real
+        dip.chromaKey(fg_img, bg_img);
+        dipped_img = fg_img;
 
-            Uri tmp = getImageUri(getApplicationContext(), dipped_img);
+        Uri tmp = getImageUri(getApplicationContext(), dipped_img);
 
-            Intent myIntent = new Intent(ImgEditingActivity.this, SharingActivity.class);
-            myIntent.putExtra("res_image", tmp);
-            ImgEditingActivity.this.startActivity(myIntent);
+        Intent myIntent = new Intent(ImgEditingActivity.this, SharingActivity.class);
+        myIntent.putExtra("res_image", tmp);
+        ImgEditingActivity.this.startActivity(myIntent);
 
         }
     };
