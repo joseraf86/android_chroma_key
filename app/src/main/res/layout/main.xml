@@ -19,12 +19,15 @@
             />
     </LinearLayout>
 
-    <Button android:text="Tomar Foto"
+    <ImageButton
         android:id="@+id/btn_capture"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/hp_btn_next"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentRight="true"
+        />
 
 
 </RelativeLayout>

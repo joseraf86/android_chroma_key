@@ -5,8 +5,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sharing_header"
-    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
     android:orientation="vertical"
+    android:background="#000000"
     tools:context="cigs.chromakey.SharingActivity" tools:ignore="MergeRootFrame" >
 
     <ImageView
@@ -22,11 +23,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Button
-            android:id="@+id/btn_email"
-            android:text="Enviar a Correo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <ImageButton
+        android:id="@+id/btn_email"
+        android:src="@drawable/hp_btn_send_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/borderlessButtonStyle"/>
 
     <Button
             android:id="@+id/btn_share"
