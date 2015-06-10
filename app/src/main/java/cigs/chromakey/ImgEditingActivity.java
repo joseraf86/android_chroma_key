@@ -1,5 +1,6 @@
 package cigs.chromakey;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ActionMode;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 
 
@@ -29,6 +32,7 @@ public class ImgEditingActivity extends AppCompatActivity
     ImageView imgView, bgView;
     MenuItem btnSave;
     Uri imageUri = null; // captured photo
+    Bitmap dipped_img;
 
     private ActionMode mActionMode;
     private Handler mHandler;
@@ -56,7 +60,7 @@ public class ImgEditingActivity extends AppCompatActivity
         }
         catch(FileNotFoundException e){}
 
-        // Add save button
+        // activar oyentes para cada thumbnail
         bgView = (ImageView) findViewById(R.id.thumbnail_1);
         bgView.setOnClickListener(this);
 
@@ -64,6 +68,12 @@ public class ImgEditingActivity extends AppCompatActivity
         bgView.setOnClickListener(this);
 
         bgView = (ImageView) findViewById(R.id.thumbnail_3);
+        bgView.setOnClickListener(this);
+
+        bgView = (ImageView) findViewById(R.id.thumbnail_4);
+        bgView.setOnClickListener(this);
+
+        bgView = (ImageView) findViewById(R.id.thumbnail_5);
         bgView.setOnClickListener(this);
 
 /*
@@ -138,14 +148,21 @@ public class ImgEditingActivity extends AppCompatActivity
             dip.chromaKey();
 
             // mostrar resultado
-            cp_bg_img = Bitmap.createScaledBitmap( cp_bg_img, view.getWidth(), view.getHeight(), false );
-            imgView.setImageBitmap(cp_fg_img);
+            dipped_img = Bitmap.createScaledBitmap( cp_fg_img, view.getWidth(), view.getHeight(), false );
+            imgView.setImageBitmap(dipped_img);
 
 
 
         }
         /* */
      }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
 
     public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
         Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
@@ -227,8 +244,10 @@ public class ImgEditingActivity extends AppCompatActivity
     private Runnable mLaunchLevel2Task = new Runnable() {
         public void run() {
 
+            Uri tmp = getImageUri(getApplicationContext(), dipped_img);
+
             Intent myIntent = new Intent(ImgEditingActivity.this, SharingActivity.class);
-            myIntent.putExtra("res_image", imageUri);
+            myIntent.putExtra("res_image", tmp);
             ImgEditingActivity.this.startActivity(myIntent);
 
         }
