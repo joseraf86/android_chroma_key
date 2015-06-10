@@ -102,16 +102,16 @@ public class ImgEditingActivity extends AppCompatActivity
             switch (view.getId()){
 
                 case R.drawable.thumbnail_1:
-
                     bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
                     break;
-                case R.drawable.background_1_tmp:
-
-                    bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_1_tmp);
+                case R.drawable.thumbnail_2:
+                    bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_2);
                     break;
                 case R.drawable.thumbnail_3:
-                default:
                     bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_3);
+                    break;
+                default:
+                    bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_2);
                     break;
 
             }
