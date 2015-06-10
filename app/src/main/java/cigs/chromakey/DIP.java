@@ -23,9 +23,7 @@ public class DIP {
     int chroma_key;
 
     /***/
-    public DIP (Bitmap fg, Bitmap bg, int tola, int tolb, int chroma_key){
-        this.fg = fg;
-        this.bg = bg;
+    public DIP (int tola, int tolb, int chroma_key){
         this.tola = tola;
         this.tolb = tolb;
         this.chroma_key = chroma_key;
@@ -67,10 +65,13 @@ public class DIP {
     }
 
     /** Chroma Key Algorithm */
-    public void chromaKey() {
+    public void chromaKey( Bitmap fg, Bitmap bg ) {
         double mask;
         int final_pixel;
         int cb_key, cr_key;
+
+        this.fg = fg;
+        this.bg = bg;
 
         // Get cb and cr of key color
         cb_key = rgb2cb( Color.red(chroma_key),

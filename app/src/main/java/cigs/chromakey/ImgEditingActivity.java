@@ -28,14 +28,19 @@ import java.io.FileNotFoundException;
 public class ImgEditingActivity extends AppCompatActivity
             implements View.OnClickListener
 {
-
+    // interfaz
     ImageView imgView, bgView;
     MenuItem btnSave;
-    Uri imageUri = null; // captured photo
-    Bitmap dipped_img;
-
     private ActionMode mActionMode;
     private Handler mHandler;
+
+    // elementos para procesamiento
+    DIP dip;
+    Uri imageUri = null; // captured photo
+    Bitmap bg_img, cp_bg_img = null;
+    Bitmap fg_img, cp_fg_img = null;
+    Bitmap dipped_img;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,9 @@ public class ImgEditingActivity extends AppCompatActivity
         setContentView(R.layout.img_editing);
 
         mHandler = new Handler();
+
+        // set dip
+        dip = new DIP(60, 62, Color.rgb(17,168,75));
 
         // set photo
         imgView = (ImageView) findViewById(R.id.image);
@@ -76,37 +84,21 @@ public class ImgEditingActivity extends AppCompatActivity
         bgView = (ImageView) findViewById(R.id.thumbnail_5);
         bgView.setOnClickListener(this);
 
-/*
-        int rojo = Color.red(-16668620); 0,168,54
-        int verde = Color.green(-16668620);
-        int azul = Color.blue(-16668620);
-
-        Log.i("Edit::", ""+rojo+"> "+verde+"> "+azul);
-*/
-
-        //Log.i("Edit:: tolerancia :", ""+Color.rgb(0,255,0)+"> "+Color.rgb(0,204,0)+"> "+Color.rgb(0,153,0));
     }
 
     @Override
     public void onClick(View view) {
 
-        // if actionmode is null "not started"
+        // activa menu contextual para aceptar montaje
         if (mActionMode == null) {
             // Start the CAB
             mActionMode = this.startActionMode(new ActionBarCallBack()); //
             view.setSelected(true);
         }
 
-        //if( view.getId() == findViewById(R.id.imageView).getId())
-
+        // evento sobre imagen del slider
         if (view instanceof ImageView)
         {
-            ImageView tmp = (ImageView) view;
-            Bitmap bg_img, cp_bg_img = null;
-            Bitmap fg_img, cp_fg_img = null;
-
-            //Bitmap bgBitmap = convertToBitmap( tmp.getDrawable(), view.getWidth(), view.getHeight() );
-
             // obtener fondo seleccionado
             switch (view.getId()) {
 
@@ -135,22 +127,21 @@ public class ImgEditingActivity extends AppCompatActivity
             catch(FileNotFoundException e){}
 
 
-
-            DIP dip = new DIP(cp_fg_img, cp_bg_img, 60, 62, Color.rgb(17,168,75));
-
+            // comprobar dimensiones
             if ( cp_fg_img.getWidth()  != cp_bg_img.getWidth() ||
-                 cp_fg_img.getHeight() != cp_bg_img.getHeight() ) {
+                    cp_fg_img.getHeight() != cp_bg_img.getHeight() ) {
                 Toast.makeText(getApplicationContext(), "la resolucion de la camara no coincide con el del fondo", Toast.LENGTH_SHORT);
                 Log.w("Edit:Onclick::", " no coinciden dimnsiones de las imagenes");
                 return;
             }
 
-            dip.chromaKey();
+            // procesar imagenes para vista previa
 
-            // mostrar resultado
+            dip.chromaKey(cp_fg_img, cp_bg_img);
+
+            // mostrar resultado en vista previa
             dipped_img = Bitmap.createScaledBitmap( cp_fg_img, view.getWidth(), view.getHeight(), false );
             imgView.setImageBitmap(dipped_img);
-
 
 
         }
@@ -211,10 +202,10 @@ public class ImgEditingActivity extends AppCompatActivity
         // 5. Called when the user click share item
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            Log.i(ImgEditingActivity.class.getName(), "XXXXXXXXXXXXXXXXXXXXXXXXXX");
+            Log.i(ImgEditingActivity.class.getName(), "action mode item clicked");
 
             switch (item.getItemId()) {
-                case R.id.save:
+                case R.id.save: // boton aceptar
                     //
                     mHandler.postDelayed(mLaunchLevel2Task, 0);
                     mode.finish(); // Action picked, so close the CAB
@@ -243,6 +234,9 @@ public class ImgEditingActivity extends AppCompatActivity
 
     private Runnable mLaunchLevel2Task = new Runnable() {
         public void run() {
+
+            // procesar imagenes con resolucion real
+            // dip.chromaKey(cp_fg_img, cp_bg_img);
 
             Uri tmp = getImageUri(getApplicationContext(), dipped_img);
 
