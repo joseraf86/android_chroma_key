@@ -31,7 +31,7 @@ public class SharingActivity extends AppCompatActivity
     implements View.OnClickListener {
 
     ImageView imgView;
-    Button btnEmail, btnPrint;
+    Button btnEmail, btnPrint, btnShare;
     PrintHelper printer;
     Bitmap mBitmap;
     Uri imageUri;
@@ -72,17 +72,19 @@ public class SharingActivity extends AppCompatActivity
         }
         catch(FileNotFoundException e){}
 
-        // set photo
+        // Set photo
         imgView = (ImageView) findViewById(R.id.res_image);
         imgView.setImageBitmap(mBitmap);
 
+        // Asignar listeners a los botones del layout
         btnEmail = (Button) findViewById(R.id.btn_email);
         btnEmail.setOnClickListener(this);
 
         btnPrint = (Button) findViewById(R.id.btn_print);
         btnPrint.setOnClickListener(this);
-
-
+        
+        btnShare = (Button) findViewById(R.id.btn_share);
+        btnShare.setOnClickListener(this);
 
     }
 
@@ -100,6 +102,11 @@ public class SharingActivity extends AppCompatActivity
             // Cambiar esta imagen a la foto imgUri
             // Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.hp_banner);
             Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", imageUri, this);
+            return;
+        }
+
+        if (v.getId() == R.id.btn_share) {
+            Sharer.shareText( "Hello World from my custom app", this);
             return;
         }
 
