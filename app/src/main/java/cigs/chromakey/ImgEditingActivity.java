@@ -28,7 +28,7 @@ public class ImgEditingActivity extends AppCompatActivity
 
     ImageView imgView, bgView;
     MenuItem btnSave;
-    Uri imageUri = null;
+    Uri imageUri = null; // captured photo
 
     private ActionMode mActionMode;
     private Handler mHandler;
@@ -47,8 +47,9 @@ public class ImgEditingActivity extends AppCompatActivity
         Bundle extras = i.getExtras();
         Bitmap mBitmap;
 
-        imageUri = (Uri)extras.getParcelable("image");
-        try{
+        // Colocar foto tomada en pantalla
+        try {
+            imageUri = (Uri)extras.getParcelable("image");
             mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
             imgView.setImageBitmap(mBitmap);
             //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
@@ -56,13 +57,13 @@ public class ImgEditingActivity extends AppCompatActivity
         catch(FileNotFoundException e){}
 
         // Add save button
-        bgView = (ImageView) findViewById(R.id.imageView);
+        bgView = (ImageView) findViewById(R.id.thumbnail_1);
         bgView.setOnClickListener(this);
 
-        bgView = (ImageView) findViewById(R.id.imageView2);
+        bgView = (ImageView) findViewById(R.id.thumbnail_2);
         bgView.setOnClickListener(this);
 
-        bgView = (ImageView) findViewById(R.id.imageView3);
+        bgView = (ImageView) findViewById(R.id.thumbnail_3);
         bgView.setOnClickListener(this);
 
 /*
@@ -74,76 +75,72 @@ public class ImgEditingActivity extends AppCompatActivity
 */
 
         //Log.i("Edit:: tolerancia :", ""+Color.rgb(0,255,0)+"> "+Color.rgb(0,204,0)+"> "+Color.rgb(0,153,0));
-
-
-
     }
 
     @Override
     public void onClick(View view) {
 
         // if actionmode is null "not started"
-        if (mActionMode != null) {
-            return;
+        if (mActionMode == null) {
+            // Start the CAB
+            mActionMode = this.startActionMode(new ActionBarCallBack()); //
+            view.setSelected(true);
         }
-
-        // Start the CAB
-        mActionMode = this.startActionMode(new ActionBarCallBack()); //
-        view.setSelected(true);
 
         //if( view.getId() == findViewById(R.id.imageView).getId())
 
         if (view instanceof ImageView)
         {
             ImageView tmp = (ImageView) view;
-            Bitmap bg_img;
+            Bitmap bg_img, cp_bg_img = null;
+            Bitmap fg_img, cp_fg_img = null;
 
             //Bitmap bgBitmap = convertToBitmap( tmp.getDrawable(), view.getWidth(), view.getHeight() );
-            switch (view.getId()){
 
-                case R.drawable.thumbnail_1:
+            // obtener fondo seleccionado
+            switch (view.getId()) {
+
+                case R.id.thumbnail_1:
                     bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
                     break;
-                case R.drawable.thumbnail_2:
+                case R.id.thumbnail_2:
                     bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_2);
                     break;
-                case R.drawable.thumbnail_3:
+                case R.id.thumbnail_3:
                     bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_3);
                     break;
                 default:
                     bg_img = BitmapFactory.decodeResource( getResources(), R.drawable.background_2);
                     break;
-
             }
 
-
-            Bitmap fg_img, cp_fg_img = null; // = BitmapFactory.decodeResource( getResources(), R.drawable.foreground_2 );
-
-            // TODO:
+            // se define foreground como la foto capturada
             try{
                 fg_img = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-                cp_fg_img = Bitmap.createScaledBitmap( fg_img, 300, 400, false );
-
+                cp_fg_img = Bitmap.createScaledBitmap( fg_img, 400, 500, false );
+                cp_bg_img = Bitmap.createScaledBitmap( bg_img, 400, 500, false );
 
                 //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
             }
             catch(FileNotFoundException e){}
 
-            Bitmap cp_bg_img = Bitmap.createScaledBitmap( bg_img, 300, 400, false );
+
 
             DIP dip = new DIP(cp_fg_img, cp_bg_img, 60, 62, Color.rgb(17,168,75));
 
-            if ( cp_fg_img.getWidth() != cp_bg_img.getWidth() ||
-                    cp_fg_img.getWidth() != cp_bg_img.getWidth() )
+            if ( cp_fg_img.getWidth()  != cp_bg_img.getWidth() ||
+                 cp_fg_img.getHeight() != cp_bg_img.getHeight() ) {
                 Toast.makeText(getApplicationContext(), "la resolucion de la camara no coincide con el del fondo", Toast.LENGTH_SHORT);
-            else {
-
-                dip.chromaKey();
-
-                // mostrar resultado
-                cp_bg_img = Bitmap.createScaledBitmap( cp_bg_img, view.getWidth(), view.getHeight(), false );
-                //imgView.setImageBitmap(cp_fg_img);
+                Log.w("Edit:Onclick::", " no coinciden dimnsiones de las imagenes");
+                return;
             }
+
+            dip.chromaKey();
+
+            // mostrar resultado
+            cp_bg_img = Bitmap.createScaledBitmap( cp_bg_img, view.getWidth(), view.getHeight(), false );
+            imgView.setImageBitmap(cp_fg_img);
+
 
 
         }

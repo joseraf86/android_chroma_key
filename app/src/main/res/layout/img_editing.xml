@@ -1,11 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
-    android:layout_width="wrap_content" android:layout_height="fill_parent"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
     android:orientation="vertical"
     tools:context="cigs.chromakey.ImgEditingActivity" tools:ignore="MergeRootFrame" >
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="#000033"
@@ -25,14 +25,14 @@
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
-                android:id="@+id/imageView"
+                android:id="@+id/thumbnail_1"
                 android:src="@drawable/thumbnail_1"
                 android:layout_alignParentTop="true" />
 
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
-                android:id="@+id/imageView2"
+                android:id="@+id/thumbnail_2"
                 android:src="@drawable/thumbnail_2"
                 android:layout_alignTop="@+id/imageView"
                 android:layout_toEndOf="@+id/imageView" />
@@ -40,7 +40,7 @@
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
-                android:id="@+id/imageView3"
+                android:id="@+id/thumbnail_3"
                 android:src="@drawable/thumbnail_3"
                 android:layout_alignTop="@+id/imageView2"
                 android:layout_toEndOf="@+id/imageView2" />
@@ -48,7 +48,7 @@
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
-                android:id="@+id/imageView4"
+                android:id="@+id/thumbnail_4"
                 android:src="#ff0eff4e"
                 android:layout_alignTop="@+id/imageView3"
                 android:layout_toEndOf="@+id/imageView3" />
@@ -56,7 +56,7 @@
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
-                android:id="@+id/imageView5"
+                android:id="@+id/thumbnail_5"
                 android:src="#ff9f76ff"
                 android:layout_alignTop="@+id/imageView4"
                 android:layout_toEndOf="@+id/imageView4" />
@@ -64,14 +64,14 @@
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
-                android:id="@+id/imageView6"
+                android:id="@+id/thumbnail_6"
                 android:src="#ffff41ba"
                 android:layout_alignParentTop="true" />
 
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
-                android:id="@+id/imageView7"
+                android:id="@+id/thumbnail_7"
                 android:src="#ff3244ff"
                 android:layout_alignTop="@+id/imageView5"
                 android:layout_toEndOf="@+id/imageView" />
@@ -79,7 +79,7 @@
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
-                android:id="@+id/imageView8"
+                android:id="@+id/thumbnail_8"
                 android:src="#ffffad2f"
                 android:layout_alignTop="@+id/imageView2"
                 android:layout_toEndOf="@+id/imageView2" />
@@ -87,7 +87,7 @@
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
-                android:id="@+id/imageView9"
+                android:id="@+id/thumbnail_9"
                 android:src="#ff0eff4e"
                 android:layout_alignTop="@+id/imageView3"
                 android:layout_toEndOf="@+id/imageView3" />
@@ -95,7 +95,7 @@
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
-                android:id="@+id/imageViewA"
+                android:id="@+id/thumbnail_A"
                 android:src="#ff9f76ff"
                 android:layout_alignTop="@+id/imageView4"
                 android:layout_toEndOf="@+id/imageView4" />
