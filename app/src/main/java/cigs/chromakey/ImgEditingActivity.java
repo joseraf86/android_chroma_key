@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -33,6 +34,10 @@ public class ImgEditingActivity extends AppCompatActivity
     MenuItem btnSave;
     private ActionMode mActionMode;
     private Handler mHandler;
+
+    private static final int PROGRESS = 0x1;
+    private ProgressBar mProgress;
+
 
     // elementos para procesamiento
     DIP dip;
@@ -143,7 +148,7 @@ public class ImgEditingActivity extends AppCompatActivity
             dip.chromaKey(cp_fg_img, cp_bg_img);
 
             // Mostrar resultado en vista previa
-            dipped_img = Bitmap.createScaledBitmap( cp_fg_img, view.getWidth(), view.getHeight(), false );
+            dipped_img = Bitmap.createScaledBitmap( cp_fg_img, fg_img.getWidth(), fg_img.getHeight(), false );
             imgView.setImageBitmap(dipped_img);
 
 
