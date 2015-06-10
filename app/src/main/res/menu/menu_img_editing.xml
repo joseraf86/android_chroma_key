@@ -5,5 +5,5 @@
     tools:context="cigs.chromakey.ImgEditingActivity">
 
     <item android:id="@+id/save" android:title="Save"
-          android:icon="@drawable/ic_action_save"></item>
+          android:icon="@drawable/ic_done_white_32dp_1x"></item>
 </menu>
