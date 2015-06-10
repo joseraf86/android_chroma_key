@@ -7,7 +7,7 @@ import android.text.Html;
 import android.widget.Toast;
 
 /**
- * Created by shadowfax on 6/8/15.
+ *
  */
 public class Mailer {
     public static void composeEmail(String[] addresses,

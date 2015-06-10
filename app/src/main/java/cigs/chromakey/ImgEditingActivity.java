@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Bundle;
@@ -19,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -31,12 +28,11 @@ public class ImgEditingActivity extends AppCompatActivity
 {
     // interfaz
     ImageView imgView, bgView;
-    MenuItem btnSave;
     private ActionMode mActionMode;
     private Handler mHandler;
 
-    private static final int PROGRESS = 0x1;
-    private ProgressBar mProgress;
+    //private static final int PROGRESS = 0x1;
+    //private ProgressBar mProgress;
 
 
     // elementos para procesamiento
@@ -66,12 +62,14 @@ public class ImgEditingActivity extends AppCompatActivity
 
         // Colocar foto tomada en pantalla
         try {
-            imageUri = (Uri)extras.getParcelable("image");
-            mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+            imageUri = extras.getParcelable("image");
+            mBitmap  = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
             imgView.setImageBitmap(mBitmap);
             //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
         }
-        catch(FileNotFoundException e){}
+        catch(FileNotFoundException e){
+            Log.w(ImgEditingActivity.class.getName(), "No se encontro el archivo");
+        }
 
         // cargar fondos
         bgs[0] = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
@@ -136,7 +134,7 @@ public class ImgEditingActivity extends AppCompatActivity
             // Comprobar dimensiones
             if ( cp_fg_img.getWidth()  != cp_bg_img.getWidth() ||
                     cp_fg_img.getHeight() != cp_bg_img.getHeight() ) {
-                Toast.makeText(getApplicationContext(), "la resolucion de la camara no coincide con el del fondo", Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(), "la resolucion de la camara no coincide con el del fondo", Toast.LENGTH_SHORT).show();
                 Log.w("Edit:Onclick::", " no coinciden dimnsiones de las imagenes");
                 return;
             }
@@ -160,7 +158,7 @@ public class ImgEditingActivity extends AppCompatActivity
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
-
+/*
     public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
         Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(mutableBitmap);
@@ -169,7 +167,7 @@ public class ImgEditingActivity extends AppCompatActivity
 
         return mutableBitmap;
     }
-
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -182,7 +180,7 @@ public class ImgEditingActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        //int id = item.getItemId();
 
 
         return super.onOptionsItemSelected(item);
@@ -207,7 +205,7 @@ public class ImgEditingActivity extends AppCompatActivity
             Log.i(ImgEditingActivity.class.getName(), "action mode item clicked");
 
             switch (item.getItemId()) {
-                case R.id.save: // boton aceptar
+                case R.id.next: // boton aceptar
                     //
                     mHandler.postDelayed(mLaunchLevel2Task, 0);
                     mode.finish(); // Action picked, so close the CAB

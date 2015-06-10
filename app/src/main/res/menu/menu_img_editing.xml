@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cigs.chromakey.ImgEditingActivity">
 
-    <item android:id="@+id/save" android:title="Save"
-          android:icon="@drawable/ic_action_save"></item>
+    <item android:id="@+id/next" android:title="Save"
+          android:icon="@drawable/hp_btn_next"></item>
 </menu>
