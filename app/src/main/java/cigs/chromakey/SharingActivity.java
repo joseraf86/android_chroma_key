@@ -63,7 +63,7 @@ public class SharingActivity extends AppCompatActivity
 
         Intent i = getIntent();
         Bundle extras = i.getExtras();
-        imageUri = (Uri)Utils.getParcelableFromBundle( extras );
+        imageUri = extras.getParcelable("image");
 
         try{
             mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));

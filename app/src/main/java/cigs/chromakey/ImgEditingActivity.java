@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Bundle;
@@ -19,24 +17,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 
 
 public class ImgEditingActivity extends AppCompatActivity
             implements View.OnClickListener
 {
+    private static final String TAG = ImgEditingActivity.class.getName();
+
     // Interfaz
     ImageView imgView, bgView;
-    MenuItem btnSave;
     private ActionMode mActionMode;
     private Handler mHandler;
 
-    private static final int PROGRESS = 0x1;
-    private ProgressBar mProgress;
+    //private static final int PROGRESS = 0x1;
+    //private ProgressBar mProgress;
 
 
     // Elementos para procesamiento
@@ -46,7 +43,7 @@ public class ImgEditingActivity extends AppCompatActivity
     Bitmap fg_img, cp_fg_img = null;
     Bitmap mBitmap, dipped_img;
     Bitmap bgs[] = new Bitmap[10];
-    Bitmap cache[] = new Bitmap[10];
+    //Bitmap cache[] = new Bitmap[10];
 
 
     @Override
@@ -66,13 +63,11 @@ public class ImgEditingActivity extends AppCompatActivity
         Bundle extras = i.getExtras();
 
         // Colocar foto tomada en pantalla
-        try {
-            imageUri = (Uri)extras.getParcelable("image");
-            mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-            imgView.setImageBitmap(mBitmap);
+        imageUri = extras.getParcelable("image");
+        mBitmap = Utils.decodeSampledBitmapFromUri(this, imageUri, 300, 300);
+        imgView.setImageBitmap(mBitmap);
             //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
-        }
-        catch(FileNotFoundException e){}
+
 
         // Cargar fondos
         bgs[0] = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
@@ -98,22 +93,6 @@ public class ImgEditingActivity extends AppCompatActivity
         bgView = (ImageView) findViewById(R.id.thumbnail_5);
         bgView.setOnClickListener(this);
 
-    }
-
-    private Bitmap readLargeResource( int pResourceId )
-    {
-        Bitmap tmp = null;
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(getResources(), pResourceId, options);
-        int imageHeight = options.outHeight;
-        int imageWidth = options.outWidth;
-        String imageType = options.outMimeType;
-
-
-
-        return tmp;
     }
 
     @Override
@@ -160,7 +139,7 @@ public class ImgEditingActivity extends AppCompatActivity
                     bg_img = bgs[0];
                     break;
             }
-            Log.i("RESOLUCION CAMARA", fg_img.getWidth()+" "+fg_img.getHeight());
+            Log.i(TAG, fg_img.getWidth()+" "+fg_img.getHeight());
             //fg_img = Bitmap.createScaledBitmap( fg_img, bg_img.getWidth(), bg_img.getHeight(), false );
             cp_fg_img = Bitmap.createScaledBitmap( fg_img, 400, 500, false );
             cp_bg_img = Bitmap.createScaledBitmap( bg_img, 400, 500, false );
@@ -168,8 +147,8 @@ public class ImgEditingActivity extends AppCompatActivity
             // Comprobar dimensiones
             if ( cp_fg_img.getWidth()  != cp_bg_img.getWidth() ||
                     cp_fg_img.getHeight() != cp_bg_img.getHeight() ) {
-                Toast.makeText(getApplicationContext(), "la resolucion de la camara no coincide con el del fondo", Toast.LENGTH_SHORT);
-                Log.w("Edit:Onclick::", " no coinciden dimnsiones de las imagenes");
+                Toast.makeText(getApplicationContext(), "la resolucion de la camara no coincide con el del fondo", Toast.LENGTH_SHORT).show();
+                Log.w(TAG+":Onclick::", " no coinciden dimensiones de las imagenes");
                 return;
             }
 
@@ -189,7 +168,7 @@ public class ImgEditingActivity extends AppCompatActivity
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
-
+/*
     public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
         Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(mutableBitmap);
@@ -198,7 +177,7 @@ public class ImgEditingActivity extends AppCompatActivity
 
         return mutableBitmap;
     }
-
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -211,8 +190,7 @@ public class ImgEditingActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
+       // int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
     }
