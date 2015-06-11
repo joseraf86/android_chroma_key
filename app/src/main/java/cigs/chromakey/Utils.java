@@ -1,20 +1,21 @@
 package cigs.chromakey;
 
+
 import android.content.ContentResolver;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Parcelable;
+import android.util.Log;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by usuario on 5/06/15.
  */
 public class Utils {
 
+    private static final String TAG = Utils.class.getName();
 
     public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -39,19 +40,35 @@ public class Utils {
         return inSampleSize;
     }
 
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+    /** */
+    public static Bitmap decodeSampledBitmapFromUri(ContentResolver contentResolver, Uri uri,
                                                          int reqWidth, int reqHeight) {
+        InputStream in = null;
+        final BitmapFactory.Options options;
 
         // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(res, resId, options);
+        try {
+            in = contentResolver.openInputStream(uri);
+            options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            //BitmapFactory.decodeResource(res, resId, options);
+            BitmapFactory.decodeStream(in, null, options);
+            in.close();
 
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+            // Calculate inSampleSize
+            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        }
+        catch(IOException e){
+            Log.e(TAG, e.getMessage(), e);
+            return null;
+        }
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
+        //return BitmapFactory.decodeResource(res, resId, options);
+        return BitmapFactory.decodeStream(in, null, options);
     }
+
+
+
 }
