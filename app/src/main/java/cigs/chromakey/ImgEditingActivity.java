@@ -62,9 +62,11 @@ public class ImgEditingActivity extends AppCompatActivity
         Intent i = getIntent();
         Bundle extras = i.getExtras();
 
+        Log.i(TAG, "imgView:"+imgView.getWidth());
+
         // Colocar foto tomada en pantalla
         imageUri = extras.getParcelable("image");
-        mBitmap = Utils.decodeSampledBitmapFromUri(this, imageUri, 300, 300);
+        mBitmap = Utils.decodeSampledBitmapFromUri(this, imageUri, 550, 600);
         imgView.setImageBitmap(mBitmap);
             //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
 
@@ -139,14 +141,14 @@ public class ImgEditingActivity extends AppCompatActivity
                     bg_img = bgs[0];
                     break;
             }
-            Log.i(TAG, fg_img.getWidth()+" "+fg_img.getHeight());
+
             //fg_img = Bitmap.createScaledBitmap( fg_img, bg_img.getWidth(), bg_img.getHeight(), false );
-            cp_fg_img = Bitmap.createScaledBitmap( fg_img, 400, 500, false );
-            cp_bg_img = Bitmap.createScaledBitmap( bg_img, 400, 500, false );
+            cp_fg_img = Bitmap.createScaledBitmap( fg_img, 550, 600, false );
+            cp_bg_img = Bitmap.createScaledBitmap( bg_img, 550, 600, false );
 
             // Comprobar dimensiones
             if ( cp_fg_img.getWidth()  != cp_bg_img.getWidth() ||
-                    cp_fg_img.getHeight() != cp_bg_img.getHeight() ) {
+                 cp_fg_img.getHeight() != cp_bg_img.getHeight() ) {
                 Toast.makeText(getApplicationContext(), "la resolucion de la camara no coincide con el del fondo", Toast.LENGTH_SHORT).show();
                 Log.w(TAG+":Onclick::", " no coinciden dimensiones de las imagenes");
                 return;
@@ -155,7 +157,8 @@ public class ImgEditingActivity extends AppCompatActivity
             // Procesar imagenes para vista previa
             dip.chromaKey(cp_fg_img, cp_bg_img);
             // Mostrar resultado en vista previa
-            dipped_img = Bitmap.createScaledBitmap(cp_fg_img, fg_img.getWidth(), fg_img.getHeight(), false);
+            dipped_img = cp_fg_img;
+                    //Bitmap.createScaledBitmap(cp_fg_img, fg_img.getWidth(), fg_img.getHeight(), false);
             imgView.setImageBitmap(dipped_img);
 
         }
@@ -211,11 +214,10 @@ public class ImgEditingActivity extends AppCompatActivity
         // 5. Called when the user click share item
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            Log.i(ImgEditingActivity.class.getName(), "action mode item clicked");
+            Log.i(TAG, "action mode item clicked");
 
             switch (item.getItemId()) {
                 case R.id.save: // boton aceptar
-                    //
                     mHandler.postDelayed(mLaunchLevel2Task, 0);
                     mode.finish(); // Action picked, so close the CAB
                     //Toast.makeText(ImgEditingActivity.this, "Shared!", Toast.LENGTH_SHORT).show();
@@ -244,9 +246,12 @@ public class ImgEditingActivity extends AppCompatActivity
     private Runnable mLaunchLevel2Task = new Runnable() {
         public void run() {
 
+        Log.i(TAG, "Pasando uri por intent...");
+
         // Procesar imagenes con resolucion real
-        dip.chromaKey(fg_img, bg_img);
-        dipped_img = fg_img;
+        //dip.chromaKey(fg_img, bg_img);
+        //dipped_img = fg_img;
+
 
         Uri tmp = getImageUri(getApplicationContext(), dipped_img);
 

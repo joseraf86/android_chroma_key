@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
     android:layout_width="fill_parent" android:layout_height="fill_parent"
     android:orientation="vertical"
+    android:background="#000000"
     tools:context="cigs.chromakey.ImgEditingActivity" tools:ignore="MergeRootFrame" >
 
     <ImageView

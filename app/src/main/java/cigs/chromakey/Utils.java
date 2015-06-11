@@ -67,6 +67,7 @@ public class Utils {
             tmp = BitmapFactory.decodeStream(in, null, options);
 
             in.close();
+
         }
         catch(IOException e){
             Log.e(TAG, e.getMessage(), e);

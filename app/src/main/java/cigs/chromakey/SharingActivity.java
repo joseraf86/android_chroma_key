@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.FileNotFoundException;
@@ -31,7 +32,8 @@ public class SharingActivity extends AppCompatActivity
     implements View.OnClickListener {
 
     ImageView imgView;
-    Button btnEmail, btnPrint, btnShare;
+    ImageButton btnEmail;
+    Button btnPrint, btnShare;
     PrintHelper printer;
     Bitmap mBitmap;
     Uri imageUri;
@@ -77,7 +79,7 @@ public class SharingActivity extends AppCompatActivity
         imgView.setImageBitmap(mBitmap);
 
         // Asignar listeners a los botones del layout
-        btnEmail = (Button) findViewById(R.id.btn_email);
+        btnEmail = (ImageButton) findViewById(R.id.btn_email);
         btnEmail.setOnClickListener(this);
 
         btnPrint = (Button) findViewById(R.id.btn_print);
