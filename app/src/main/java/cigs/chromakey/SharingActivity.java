@@ -2,24 +2,19 @@ package cigs.chromakey;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.print.PrintHelper;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Patterns;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -72,7 +67,9 @@ public class SharingActivity extends AppCompatActivity
             imgView.setImageBitmap(mBitmap);
             //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
         }
-        catch(FileNotFoundException e){}
+        catch(FileNotFoundException e){
+            Log.w(SharingActivity.class.getName(), "no se encontro el archivo");
+        }
 
         // Set photo
         imgView = (ImageView) findViewById(R.id.res_image);
@@ -109,7 +106,7 @@ public class SharingActivity extends AppCompatActivity
 
         if (v.getId() == R.id.btn_share) {
             Sharer.shareText( "Hello World from my custom app", this);
-            return;
+            //return;
         }
 
     }
@@ -128,22 +125,11 @@ public class SharingActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        //int id = item.getItemId();
 
 
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-
     }
 
 

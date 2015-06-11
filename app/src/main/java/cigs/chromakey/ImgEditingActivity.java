@@ -70,7 +70,6 @@ public class ImgEditingActivity extends AppCompatActivity
         imgView.setImageBitmap(mBitmap);
             //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
 
-
         // Cargar fondos
         bgs[0] = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
         bgs[1] = BitmapFactory.decodeResource( getResources(), R.drawable.background_2);
@@ -193,7 +192,8 @@ public class ImgEditingActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-       // int id = item.getItemId();
+
+        //int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
     }
@@ -217,7 +217,8 @@ public class ImgEditingActivity extends AppCompatActivity
             Log.i(TAG, "action mode item clicked");
 
             switch (item.getItemId()) {
-                case R.id.save: // boton aceptar
+                case R.id.next: // boton aceptar
+
                     mHandler.postDelayed(mLaunchLevel2Task, 0);
                     mode.finish(); // Action picked, so close the CAB
                     //Toast.makeText(ImgEditingActivity.this, "Shared!", Toast.LENGTH_SHORT).show();
