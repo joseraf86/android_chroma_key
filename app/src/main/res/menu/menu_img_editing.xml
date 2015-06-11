@@ -4,11 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cigs.chromakey.ImgEditingActivity">
 
-<<<<<<< HEAD
     <item android:id="@+id/next" android:title="Save"
           android:icon="@drawable/hp_btn_next"></item>
-=======
-    <item android:id="@+id/save" android:title="Save"
-          android:icon="@drawable/ic_done_white_32dp_1x"></item>
->>>>>>> 8f8d324539f2a6af7caca7583b85073014d70f7d
 </menu>
