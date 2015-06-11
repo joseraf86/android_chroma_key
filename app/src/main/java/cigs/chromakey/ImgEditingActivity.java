@@ -124,7 +124,7 @@ public class ImgEditingActivity extends AppCompatActivity
                         cache[0] = processImage(fg_img,bg_img);
                     }
                     imgView.setImageBitmap(cache[0]);
-
+                    dipped_img = cache[0];
                     break;
                 case R.id.thumbnail_2:
                     if(bgs[1] == null){
@@ -135,7 +135,7 @@ public class ImgEditingActivity extends AppCompatActivity
                         cache[1] = processImage(fg_img, bg_img);
                     }
                     imgView.setImageBitmap(cache[1]);
-
+                    dipped_img = cache[1];
                     break;
                 case R.id.thumbnail_3:
                     if(bgs[2] == null){
@@ -146,7 +146,7 @@ public class ImgEditingActivity extends AppCompatActivity
                         cache[2] = processImage(fg_img,bg_img);
                     }
                     imgView.setImageBitmap(cache[2]);
-
+                    dipped_img = cache[2];
                     break;
                 default:
                     if(bgs[0] == null){
@@ -157,7 +157,7 @@ public class ImgEditingActivity extends AppCompatActivity
                         cache[0] = processImage(fg_img, bg_img);
                     }
                     imgView.setImageBitmap(cache[0]);
-
+                    dipped_img = cache[0];
                     break;
             }
         }
@@ -184,6 +184,7 @@ public class ImgEditingActivity extends AppCompatActivity
 
         // Mostrar resultado en vista previa
         dipped_img = cp_fg_img;
+
         //Bitmap.createScaledBitmap(cp_fg_img, fg_img.getWidth(), fg_img.getHeight(), false);
         return dipped_img;
 
