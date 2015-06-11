@@ -43,7 +43,7 @@ public class ImgEditingActivity extends AppCompatActivity
     Bitmap fg_img, cp_fg_img = null;
     Bitmap mBitmap, dipped_img;
     Bitmap bgs[] = new Bitmap[10];
-    //Bitmap cache[] = new Bitmap[10];
+    Bitmap cache[] = new Bitmap[10];
 
 
     @Override
@@ -120,49 +120,74 @@ public class ImgEditingActivity extends AppCompatActivity
                         bgs[0] = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
                     }
                     bg_img = bgs[0];
+                    if(cache[0] == null){
+                        cache[0] = processImage(fg_img,bg_img);
+                    }
+                    imgView.setImageBitmap(cache[0]);
+
                     break;
                 case R.id.thumbnail_2:
                     if(bgs[1] == null){
                         bgs[1] = BitmapFactory.decodeResource( getResources(), R.drawable.background_2);
                     }
                     bg_img = bgs[1];
+                    if(cache[1] == null){
+                        cache[1] = processImage(fg_img, bg_img);
+                    }
+                    imgView.setImageBitmap(cache[1]);
+
                     break;
                 case R.id.thumbnail_3:
                     if(bgs[2] == null){
                         bgs[2] = BitmapFactory.decodeResource( getResources(), R.drawable.background_3);
                     }
                     bg_img = bgs[2];
+                    if(cache[2] == null){
+                        cache[2] = processImage(fg_img,bg_img);
+                    }
+                    imgView.setImageBitmap(cache[2]);
+
                     break;
                 default:
                     if(bgs[0] == null){
                         bgs[0] = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
                     }
                     bg_img = bgs[0];
+                    if(cache[0] == null){
+                        cache[0] = processImage(fg_img, bg_img);
+                    }
+                    imgView.setImageBitmap(cache[0]);
+
                     break;
             }
-
-            //fg_img = Bitmap.createScaledBitmap( fg_img, bg_img.getWidth(), bg_img.getHeight(), false );
-            cp_fg_img = Bitmap.createScaledBitmap( fg_img, 550, 600, false );
-            cp_bg_img = Bitmap.createScaledBitmap( bg_img, 550, 600, false );
-
-            // Comprobar dimensiones
-            if ( cp_fg_img.getWidth()  != cp_bg_img.getWidth() ||
-                 cp_fg_img.getHeight() != cp_bg_img.getHeight() ) {
-                Toast.makeText(getApplicationContext(), "la resolucion de la camara no coincide con el del fondo", Toast.LENGTH_SHORT).show();
-                Log.w(TAG+":Onclick::", " no coinciden dimensiones de las imagenes");
-                return;
-            }
-
-            // Procesar imagenes para vista previa
-            dip.chromaKey(cp_fg_img, cp_bg_img);
-            // Mostrar resultado en vista previa
-            dipped_img = cp_fg_img;
-                    //Bitmap.createScaledBitmap(cp_fg_img, fg_img.getWidth(), fg_img.getHeight(), false);
-            imgView.setImageBitmap(dipped_img);
-
         }
         /* */
      }
+
+    protected Bitmap processImage(Bitmap fg_img, Bitmap bg_img){
+        //fg_img = Bitmap.createScaledBitmap( fg_img, bg_img.getWidth(), bg_img.getHeight(), false );
+        cp_fg_img = Bitmap.createScaledBitmap( fg_img, 550, 600, false );
+        cp_bg_img = Bitmap.createScaledBitmap( bg_img, 550, 600, false );
+
+        // Comprobar dimensiones
+        /*if ( cp_fg_img.getWidth()  != cp_bg_img.getWidth() ||
+                cp_fg_img.getHeight() != cp_bg_img.getHeight() ) {
+            Toast.makeText(getApplicationContext(), "la resolucion de la camara no coincide con el del fondo", Toast.LENGTH_SHORT).show();
+            Log.w(TAG+":Onclick::", " no coinciden dimensiones de las imagenes");
+        }*/
+
+        // Procesar imagenes para vista previa
+        dip.chromaKey(cp_fg_img, cp_bg_img);
+
+        BitmapWorkerTask task = new BitmapWorkerTask(cp_fg_img, cp_bg_img);
+        task.execute(0);
+
+        // Mostrar resultado en vista previa
+        dipped_img = cp_fg_img;
+        //Bitmap.createScaledBitmap(cp_fg_img, fg_img.getWidth(), fg_img.getHeight(), false);
+        return dipped_img;
+
+    }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();

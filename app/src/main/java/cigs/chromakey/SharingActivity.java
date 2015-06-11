@@ -67,7 +67,9 @@ public class SharingActivity extends AppCompatActivity
             imgView.setImageBitmap(mBitmap);
             //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
         }
-        catch(FileNotFoundException e){
+        // FileNotFoundException
+        catch(Exception e){
+            e.printStackTrace();
             Log.w(SharingActivity.class.getName(), "no se encontro el archivo");
         }
 
