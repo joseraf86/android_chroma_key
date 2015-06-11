@@ -79,6 +79,9 @@ public class ImgEditingActivity extends AppCompatActivity
         bgs[1] = BitmapFactory.decodeResource( getResources(), R.drawable.background_2);
         bgs[2] = BitmapFactory.decodeResource( getResources(), R.drawable.background_3);
 
+        //mImageView.setImageBitmap(
+        //        Utils.decodeSampledBitmapFromResource(getResources(), R.id.myimage, 100, 100));
+
         // Activar oyentes para cada thumbnail
         bgView = (ImageView) findViewById(R.id.thumbnail_1);
         bgView.setOnClickListener(this);
@@ -95,6 +98,22 @@ public class ImgEditingActivity extends AppCompatActivity
         bgView = (ImageView) findViewById(R.id.thumbnail_5);
         bgView.setOnClickListener(this);
 
+    }
+
+    private Bitmap readLargeResource( int pResourceId )
+    {
+        Bitmap tmp = null;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(getResources(), pResourceId, options);
+        int imageHeight = options.outHeight;
+        int imageWidth = options.outWidth;
+        String imageType = options.outMimeType;
+
+
+
+        return tmp;
     }
 
     @Override

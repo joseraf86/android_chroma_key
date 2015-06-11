@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.main);
 
-        final Button boton = (Button) findViewById(R.id.btn_capture);
+        final ImageButton boton = (ImageButton) findViewById(R.id.btn_capture);
         boton.setOnClickListener(new View.OnClickListener() {
             // Tomar foto
             public void onClick(View v) {
