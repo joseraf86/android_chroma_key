@@ -26,7 +26,7 @@ import java.io.FileNotFoundException;
 public class ImgEditingActivity extends AppCompatActivity
             implements View.OnClickListener
 {
-    // interfaz
+    // Interfaz
     ImageView imgView, bgView;
     private ActionMode mActionMode;
     private Handler mHandler;
@@ -35,13 +35,14 @@ public class ImgEditingActivity extends AppCompatActivity
     //private ProgressBar mProgress;
 
 
-    // elementos para procesamiento
+    // Elementos para procesamiento
     DIP dip;
     Uri imageUri = null; // captured photo
     Bitmap bg_img, cp_bg_img = null;
     Bitmap fg_img, cp_fg_img = null;
     Bitmap mBitmap, dipped_img;
     Bitmap bgs[] = new Bitmap[10];
+    Bitmap cache[] = new Bitmap[10];
 
 
     @Override
@@ -51,10 +52,10 @@ public class ImgEditingActivity extends AppCompatActivity
 
         mHandler = new Handler();
 
-        // set dip
+        // Set dip
         dip = new DIP(60, 62, Color.rgb(17,168,75));
 
-        // set photo
+        // Set photo
         imgView = (ImageView) findViewById(R.id.image);
 
         Intent i = getIntent();
@@ -71,12 +72,15 @@ public class ImgEditingActivity extends AppCompatActivity
             Log.w(ImgEditingActivity.class.getName(), "No se encontro el archivo");
         }
 
-        // cargar fondos
+        // Cargar fondos
         bgs[0] = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
         bgs[1] = BitmapFactory.decodeResource( getResources(), R.drawable.background_2);
         bgs[2] = BitmapFactory.decodeResource( getResources(), R.drawable.background_3);
 
-        // activar oyentes para cada thumbnail
+        //mImageView.setImageBitmap(
+        //        Utils.decodeSampledBitmapFromResource(getResources(), R.id.myimage, 100, 100));
+
+        // Activar oyentes para cada thumbnail
         bgView = (ImageView) findViewById(R.id.thumbnail_1);
         bgView.setOnClickListener(this);
 
@@ -94,17 +98,33 @@ public class ImgEditingActivity extends AppCompatActivity
 
     }
 
+    private Bitmap readLargeResource( int pResourceId )
+    {
+        Bitmap tmp = null;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(getResources(), pResourceId, options);
+        int imageHeight = options.outHeight;
+        int imageWidth = options.outWidth;
+        String imageType = options.outMimeType;
+
+
+
+        return tmp;
+    }
+
     @Override
     public void onClick(View view) {
 
-        // activa menu contextual para aceptar montaje
+        // Activa menu contextual para aceptar montaje
         if (mActionMode == null) {
             // Start the CAB
             mActionMode = this.startActionMode(new ActionBarCallBack()); //
             view.setSelected(true);
         }
 
-        // evento sobre imagen del slider
+        // Evento sobre imagen del slider
         if (view instanceof ImageView)
         {
             // Se define foreground como la foto capturada
@@ -114,20 +134,32 @@ public class ImgEditingActivity extends AppCompatActivity
             switch (view.getId()) {
 
                 case R.id.thumbnail_1:
+                    if(bgs[0] == null){
+                        bgs[0] = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
+                    }
                     bg_img = bgs[0];
                     break;
                 case R.id.thumbnail_2:
+                    if(bgs[1] == null){
+                        bgs[1] = BitmapFactory.decodeResource( getResources(), R.drawable.background_2);
+                    }
                     bg_img = bgs[1];
                     break;
                 case R.id.thumbnail_3:
+                    if(bgs[2] == null){
+                        bgs[2] = BitmapFactory.decodeResource( getResources(), R.drawable.background_3);
+                    }
                     bg_img = bgs[2];
                     break;
                 default:
+                    if(bgs[0] == null){
+                        bgs[0] = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
+                    }
                     bg_img = bgs[0];
                     break;
             }
-
-            fg_img = Bitmap.createScaledBitmap( fg_img, bg_img.getWidth(), bg_img.getHeight(), false );
+            Log.i("RESOLUCION CAMARA", fg_img.getWidth()+" "+fg_img.getHeight());
+            //fg_img = Bitmap.createScaledBitmap( fg_img, bg_img.getWidth(), bg_img.getHeight(), false );
             cp_fg_img = Bitmap.createScaledBitmap( fg_img, 400, 500, false );
             cp_bg_img = Bitmap.createScaledBitmap( bg_img, 400, 500, false );
 
@@ -140,13 +172,10 @@ public class ImgEditingActivity extends AppCompatActivity
             }
 
             // Procesar imagenes para vista previa
-
             dip.chromaKey(cp_fg_img, cp_bg_img);
-
             // Mostrar resultado en vista previa
-            dipped_img = Bitmap.createScaledBitmap( cp_fg_img, fg_img.getWidth(), fg_img.getHeight(), false );
+            dipped_img = Bitmap.createScaledBitmap(cp_fg_img, fg_img.getWidth(), fg_img.getHeight(), false);
             imgView.setImageBitmap(dipped_img);
-
 
         }
         /* */
