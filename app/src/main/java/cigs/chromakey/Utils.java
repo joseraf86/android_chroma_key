@@ -79,4 +79,24 @@ public class Utils {
 
 
 
+    public static Bitmap decodeBitmapFromUri(Activity act, Uri uri) {
+        Bitmap tmp = null;
+        InputStream in = null;
+        final BitmapFactory.Options options;
+
+        try {
+            in = act.getContentResolver().openInputStream(uri);
+            tmp = BitmapFactory.decodeStream(in);
+
+            in.close();
+
+        }
+        catch(IOException e){
+            Log.e(TAG, e.getMessage(), e);
+            return null;
+        }
+
+        return tmp;
+    }
+
 }

@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.TITLE, "prueba.jpg");
-                values.put(MediaStore.Images.Media.DESCRIPTION,"Image capture by camera");
+                values.put(MediaStore.Images.Media.DESCRIPTION,"Imagen capturada por camara");
 
                 imageUri = getContentResolver().insert(
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
@@ -59,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
                 mHandler.postDelayed(mLaunchLevel1Task,0);
             }
             //else if ( resultCode == RESULT_CANCELED) {
-                //Toast.makeText(this, " Picture was not taken ", Toast.LENGTH_SHORT).show();
+                // no action
             //}
             else {
 
-                Toast.makeText(this, " Picture was not taken ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, " La foto no fue tomada ", Toast.LENGTH_SHORT).show();
             }
         }
     }

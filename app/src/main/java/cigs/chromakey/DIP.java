@@ -6,18 +6,18 @@ import android.util.Log;
 
 
 /**
- * Created by jrgs on 5/06/15.
  * DIP Digital Image Processing
  * Process a Bitmap (bpm) picture to subtract its background and
  * replace it with other picture
  */
 public class DIP {
+    private static final String TAG = DIP.class.getName();
+
     // Foreground fg and Background bg picture
     Bitmap fg, bg;
 
     // Tolerance [tola; tolb]
-    int tola;
-    int tolb;
+    int tola, tolb;
 
     // Chroma Key ( Green or Blue color)
     int chroma_key;
@@ -69,6 +69,7 @@ public class DIP {
         double mask;
         int final_pixel;
         int cb_key, cr_key;
+        int pxout_red, pxout_green, pxout_blue;
 
         this.fg = fg;
         this.bg = bg;
@@ -80,10 +81,10 @@ public class DIP {
         cr_key = rgb2cr(Color.red(chroma_key),
                         Color.green(chroma_key),
                         Color.blue(chroma_key));
-        Log.i("DIP:: cbk, crk :", ""+cb_key+", "+cr_key);
-        //Log.i("DIP:: fg.getWidth()", ""+fg.getWidth());
-//
-        String colorcloses = "";
+        //Log.i("DIP:: cbk, crk :", ""+cb_key+", "+cr_key);
+        //Log.i(TAG, "alturas "+ fg.getHeight()+ " "+ bg.getHeight());
+        //Log.i(TAG, "anchos "+ fg.getWidth()+ " "+ bg.getWidth());
+
         // for each i,j get Cb and Cr for pixel value
         for(int i=0; i < fg.getWidth(); i++) {
             for(int j=0; j < fg.getHeight(); j++) {
@@ -98,14 +99,16 @@ public class DIP {
                 //Log.i("DIP:: c/ i,j cb, cr: ", "("+i+","+j+")"+cb_p+", "+cr_p);
 
                 mask = colorClose(cb_p, cr_p, cb_key, cr_key);
-                //if ( i==20 && j == 400) Log.i("DIP:: color :", ""+fg.getPixel(i,j));
-                //colorcloses += mask + ", ";
                 mask = 1.0 - mask;
 
-                int pxout_red, pxout_green, pxout_blue;
-
                 if (mask == 1) {
-                    fg.setPixel(i, j, bg.getPixel(i,j) );
+                    try {
+                        fg.setPixel(i, j, bg.getPixel(i, j));
+                    }
+                    catch(IllegalArgumentException e){
+                        Log.i(TAG, "i "+i+ " j"+j);
+                        return;
+                    }
                 }else{
                     if (mask == 0) {
 
@@ -144,55 +147,7 @@ public class DIP {
             //Log.i("DIP:: distances :", i+""+colorcloses);
         }
 
-        Log.i("DIP: chromakey ", "DONE!!!!!!");
-        /*
-        int pos, mx;
-        int r,g,b, r_bg, g_bg, b_bg;
-        int cb, cr, cb_key, cr_key, tola, tolb, r_key, g_key, b_key;
-        double mask;
 
-        Bitmap bg, fg;
-
-        pos = fg.datapos;
-        mx = 3 * fg.getWidth();
-        switch (mx%4)
-        {
-            case 1:
-                mx = mx+3;
-                break;
-            case 2:
-                mx = mx+2;
-                break;
-            case 3:
-                mx = mx+1;
-                break;
-        }
-        int i, j;
-        for (i=0; i  ;)  {
-            //fseek(fg.file, pos, SEEK_SET);
-            //fseek(out.file, pos, SEEK_SET);
-            //fseek(bg.file, pos, SEEK_SET);
-            for (j=pos; j ; )     {
-                //b = getc(fg.file);
-                //g = getc(fg.file);
-                //r = getc(fg.file);
-                //b_bg = getc(bg.file);
-                //g_bg = getc(bg.file);
-                //r_bg = getc(bg.file);
-                cb = rgb2cb(r,g,b);
-                cr = rgb2cr(r,g,b);
-                mask = colorclose(cb, cr, cb_key, cr_key, tola, tolb);
-                mask = 1 - mask;
-                r = Math.max(r - mask*r_key, 0) + mask*r_bg;
-                g = Math.max(g - mask*g_key, 0) + mask*g_bg;
-                b = Math.max(b - mask*b_key, 0) + mask*b_bg;
-                //fputc(b, out.file);
-                //fputc(g, out.file);
-                //fputc(r, out.file);
-            }
-            pos = mx+pos;
-        }
-        */
     }
 
 }

@@ -37,13 +37,17 @@ public class ImgEditingActivity extends AppCompatActivity
 
 
     // Elementos para procesamiento
-    DIP dip;
+
     Uri imageUri = null; // captured photo
     Bitmap bg_img, cp_bg_img = null;
     Bitmap fg_img, cp_fg_img = null;
     Bitmap mBitmap, dipped_img;
+
+    DIP dip;
     Bitmap bgs[] = new Bitmap[10];
     Bitmap cache[] = new Bitmap[10];
+
+    int last_bg_id;
 
 
     @Override
@@ -62,11 +66,11 @@ public class ImgEditingActivity extends AppCompatActivity
         Intent i = getIntent();
         Bundle extras = i.getExtras();
 
-        Log.i(TAG, "imgView:"+imgView.getWidth());
+        //Log.i(TAG, "imgView:"+imgView.getDrawingCache().getWidth());
 
         // Colocar foto tomada en pantalla
         imageUri = extras.getParcelable("image");
-        mBitmap = Utils.decodeSampledBitmapFromUri(this, imageUri, 550, 600);
+        mBitmap  = Utils.decodeSampledBitmapFromUri(this, imageUri, 550, 600);
         imgView.setImageBitmap(mBitmap);
             //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
 
@@ -96,12 +100,27 @@ public class ImgEditingActivity extends AppCompatActivity
 
     }
 
+    private void changeToIndex(int index, int resourceId) {
+
+        int i = index;
+        last_bg_id = resourceId;
+
+        if(bgs[i] == null){
+            bgs[i] = BitmapFactory.decodeResource( getResources(),resourceId);
+        }
+        bg_img = bgs[i];
+        if(cache[i] == null){
+            cache[i] = processImage(fg_img,bg_img);
+        }
+        imgView.setImageBitmap(cache[i]);
+        dipped_img = cache[i];
+    }
+
     @Override
     public void onClick(View view) {
 
-        // Activa menu contextual para aceptar montaje
+        // Activa menu contextual CAB para aceptar montaje
         if (mActionMode == null) {
-            // Start the CAB
             mActionMode = this.startActionMode(new ActionBarCallBack()); //
             view.setSelected(true);
         }
@@ -116,48 +135,16 @@ public class ImgEditingActivity extends AppCompatActivity
             switch (view.getId()) {
 
                 case R.id.thumbnail_1:
-                    if(bgs[0] == null){
-                        bgs[0] = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
-                    }
-                    bg_img = bgs[0];
-                    if(cache[0] == null){
-                        cache[0] = processImage(fg_img,bg_img);
-                    }
-                    imgView.setImageBitmap(cache[0]);
-                    dipped_img = cache[0];
+                    changeToIndex(0, R.drawable.background_1);
                     break;
                 case R.id.thumbnail_2:
-                    if(bgs[1] == null){
-                        bgs[1] = BitmapFactory.decodeResource( getResources(), R.drawable.background_2);
-                    }
-                    bg_img = bgs[1];
-                    if(cache[1] == null){
-                        cache[1] = processImage(fg_img, bg_img);
-                    }
-                    imgView.setImageBitmap(cache[1]);
-                    dipped_img = cache[1];
+                    changeToIndex(1, R.drawable.background_2);
                     break;
                 case R.id.thumbnail_3:
-                    if(bgs[2] == null){
-                        bgs[2] = BitmapFactory.decodeResource( getResources(), R.drawable.background_3);
-                    }
-                    bg_img = bgs[2];
-                    if(cache[2] == null){
-                        cache[2] = processImage(fg_img,bg_img);
-                    }
-                    imgView.setImageBitmap(cache[2]);
-                    dipped_img = cache[2];
+                    changeToIndex(2, R.drawable.background_3);
                     break;
                 default:
-                    if(bgs[0] == null){
-                        bgs[0] = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);
-                    }
-                    bg_img = bgs[0];
-                    if(cache[0] == null){
-                        cache[0] = processImage(fg_img, bg_img);
-                    }
-                    imgView.setImageBitmap(cache[0]);
-                    dipped_img = cache[0];
+                    changeToIndex(0, R.drawable.background_1);
                     break;
             }
         }
@@ -185,7 +172,7 @@ public class ImgEditingActivity extends AppCompatActivity
         // Mostrar resultado en vista previa
         dipped_img = cp_fg_img;
 
-        //Bitmap.createScaledBitmap(cp_fg_img, fg_img.getWidth(), fg_img.getHeight(), false);
+        //
         return dipped_img;
 
     }
@@ -280,10 +267,12 @@ public class ImgEditingActivity extends AppCompatActivity
         //dipped_img = fg_img;
 
 
-        Uri tmp = getImageUri(getApplicationContext(), dipped_img);
+        //Uri tmp = getImageUri(getApplicationContext(), dipped_img);
+            //Log.w(TAG, "+++++++++++++ background_id "+last_bg_id);
 
         Intent myIntent = new Intent(ImgEditingActivity.this, SharingActivity.class);
-        myIntent.putExtra("res_image", tmp);
+        myIntent.putExtra("res_image", imageUri);
+        myIntent.putExtra("bg_id", last_bg_id);
         ImgEditingActivity.this.startActivity(myIntent);
 
         }

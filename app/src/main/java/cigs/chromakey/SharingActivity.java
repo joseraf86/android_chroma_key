@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.print.PrintHelper;
 import android.os.Bundle;
@@ -26,9 +27,11 @@ import java.util.regex.Pattern;
 public class SharingActivity extends AppCompatActivity
     implements View.OnClickListener {
 
+    private static final String TAG = SharingActivity.class.getName();
+
     ImageView imgView;
-    ImageButton btnEmail;
-    Button btnPrint, btnShare;
+    ImageButton btnEmail, btnPrint;
+    Button btnShare;
     PrintHelper printer;
     Bitmap mBitmap;
     Uri imageUri;
@@ -61,10 +64,35 @@ public class SharingActivity extends AppCompatActivity
         Intent i = getIntent();
         Bundle extras = i.getExtras();
         imageUri = extras.getParcelable("res_image");
+        int background_id = extras.getInt("bg_id");
+
+        Bitmap tmp = Utils.decodeBitmapFromUri(this, imageUri);
+        Bitmap bg = BitmapFactory.decodeResource(getResources(), background_id);
+
+        // se necesita q el bitmap sea mutable para poder cambiarle el fondo
+        Bitmap fgt = tmp.copy(Bitmap.Config.ARGB_8888, true);
+        Bitmap fg  = Bitmap.createScaledBitmap(fgt, bg.getWidth(), bg.getHeight(), false);
+
+        // Set photo
+        imgView = (ImageView) findViewById(R.id.res_image);
+        //imgView.setImageBitmap(mBitmap);
+
+
+        //Log.w(TAG, "+++++++++++++ background_id "+background_id);
+
+
+        DIP dip = new DIP(60, 62, Color.rgb(17, 168, 75));
+        if (bg!=null && fg !=null) {
+            dip.chromaKey(fg, bg);
+            imgView.setImageBitmap(fg);//mBitmap
+        }
+
+       /* */
+
 
         try{
             mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-            imgView.setImageBitmap(mBitmap);
+
             //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
         }
         // FileNotFoundException
@@ -73,19 +101,14 @@ public class SharingActivity extends AppCompatActivity
             Log.w(SharingActivity.class.getName(), "no se encontro el archivo");
         }
 
-        // Set photo
-        imgView = (ImageView) findViewById(R.id.res_image);
-        imgView.setImageBitmap(mBitmap);
+
 
         // Asignar listeners a los botones del layout
         btnEmail = (ImageButton) findViewById(R.id.btn_email);
         btnEmail.setOnClickListener(this);
 
-        btnPrint = (Button) findViewById(R.id.btn_print);
+        btnPrint = (ImageButton) findViewById(R.id.btn_print);
         btnPrint.setOnClickListener(this);
-        
-        btnShare = (Button) findViewById(R.id.btn_share);
-        btnShare.setOnClickListener(this);
 
     }
 
@@ -104,11 +127,6 @@ public class SharingActivity extends AppCompatActivity
             // Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.hp_banner);
             Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", imageUri, this);
             return;
-        }
-
-        if (v.getId() == R.id.btn_share) {
-            Sharer.shareText( "Hello World from my custom app", this);
-            //return;
         }
 
     }
