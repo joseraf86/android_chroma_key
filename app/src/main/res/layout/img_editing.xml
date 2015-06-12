@@ -6,6 +6,14 @@
     tools:context="cigs.chromakey.ImgEditingActivity" tools:ignore="MergeRootFrame" >
 
     <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/hp_logo"
+            android:padding="4dp"
+            />
+
+    <ImageView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"

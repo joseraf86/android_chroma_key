@@ -177,12 +177,6 @@ public class ImgEditingActivity extends AppCompatActivity
 
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
 /*
     public Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
         Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
@@ -262,15 +256,10 @@ public class ImgEditingActivity extends AppCompatActivity
 
         Log.i(TAG, "Pasando uri por intent...");
 
-        // Procesar imagenes con resolucion real
-        //dip.chromaKey(fg_img, bg_img);
-        //dipped_img = fg_img;
-
-
-        //Uri tmp = getImageUri(getApplicationContext(), dipped_img);
-            //Log.w(TAG, "+++++++++++++ background_id "+last_bg_id);
+        Uri tmp = Utils.getImageUri(getApplicationContext(), dipped_img);
 
         Intent myIntent = new Intent(ImgEditingActivity.this, SharingActivity.class);
+        myIntent.putExtra("res_image_min", tmp);
         myIntent.putExtra("res_image", imageUri);
         myIntent.putExtra("bg_id", last_bg_id);
         ImgEditingActivity.this.startActivity(myIntent);

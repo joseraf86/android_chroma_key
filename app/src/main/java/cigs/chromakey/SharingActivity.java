@@ -33,8 +33,9 @@ public class SharingActivity extends AppCompatActivity
     ImageButton btnEmail, btnPrint;
     Button btnShare;
     PrintHelper printer;
-    Bitmap mBitmap;
-    Uri imageUri;
+    Bitmap mBitmap, fBitmap;
+    Uri imageUri, imageViewUri;
+    int background_id;
 
     private String getUserEmail(Context context) {
 
@@ -48,6 +49,23 @@ public class SharingActivity extends AppCompatActivity
             }
         }
         return email;
+    }
+
+    private void processImage(){
+        Bitmap tmp = Utils.decodeBitmapFromUri(this, imageUri);
+        Bitmap bg = BitmapFactory.decodeResource(getResources(), background_id);
+
+        imgView = (ImageView) findViewById(R.id.res_image);
+
+        // se necesita q el bitmap sea mutable para poder cambiarle el fondo
+        Bitmap fgt = tmp.copy(Bitmap.Config.ARGB_8888, true);
+        Bitmap fg  = Bitmap.createScaledBitmap(fgt, bg.getWidth(), bg.getHeight(), false);
+
+        DIP dip = new DIP(60, 62, Color.rgb(17, 168, 75));
+        if (bg!=null && fg !=null) {
+            dip.chromaKey(fg, bg);
+            fBitmap = fg;
+        }
     }
 
     @Override
@@ -64,44 +82,11 @@ public class SharingActivity extends AppCompatActivity
         Intent i = getIntent();
         Bundle extras = i.getExtras();
         imageUri = extras.getParcelable("res_image");
-        int background_id = extras.getInt("bg_id");
+        imageViewUri = extras.getParcelable("res_image_min");
+        background_id = extras.getInt("bg_id");
 
-        Bitmap tmp = Utils.decodeBitmapFromUri(this, imageUri);
-        Bitmap bg = BitmapFactory.decodeResource(getResources(), background_id);
-
-        // se necesita q el bitmap sea mutable para poder cambiarle el fondo
-        Bitmap fgt = tmp.copy(Bitmap.Config.ARGB_8888, true);
-        Bitmap fg  = Bitmap.createScaledBitmap(fgt, bg.getWidth(), bg.getHeight(), false);
-
-        // Set photo
-        imgView = (ImageView) findViewById(R.id.res_image);
-        //imgView.setImageBitmap(mBitmap);
-
-
-        //Log.w(TAG, "+++++++++++++ background_id "+background_id);
-
-
-        DIP dip = new DIP(60, 62, Color.rgb(17, 168, 75));
-        if (bg!=null && fg !=null) {
-            dip.chromaKey(fg, bg);
-            imgView.setImageBitmap(fg);//mBitmap
-        }
-
-       /* */
-
-
-        try{
-            mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-
-            //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
-        }
-        // FileNotFoundException
-        catch(Exception e){
-            e.printStackTrace();
-            Log.w(SharingActivity.class.getName(), "no se encontro el archivo");
-        }
-
-
+        Bitmap tmp = Utils.decodeBitmapFromUri(this, imageViewUri);
+        imgView.setImageBitmap(tmp);//mBitmap
 
         // Asignar listeners a los botones del layout
         btnEmail = (ImageButton) findViewById(R.id.btn_email);
@@ -115,7 +100,9 @@ public class SharingActivity extends AppCompatActivity
     public void onClick (View v)
     {
         if (v.getId() == R.id.btn_print) {
-            printer.printBitmap("HP stand muestra", mBitmap);
+            processImage();
+
+            printer.printBitmap("HP stand muestra", fBitmap);
             return;
         }
 
@@ -125,7 +112,8 @@ public class SharingActivity extends AppCompatActivity
 
             // Cambiar esta imagen a la foto imgUri
             // Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.hp_banner);
-            Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", imageUri, this);
+            //Uri tmp = Utils.getImageUri(getApplicationContext(), fBitmap);
+            Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", imageViewUri, this);
             return;
         }
 
