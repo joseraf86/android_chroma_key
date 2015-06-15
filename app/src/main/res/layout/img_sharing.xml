@@ -8,45 +8,75 @@
     android:id="@+id/sharing_header"
     android:layout_width="fill_parent" android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context="cigs.chromakey.SharingActivity" tools:ignore="MergeRootFrame" >
+    android:layout_centerHorizontal="true"
+    >
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/hp_logo"
-        android:padding="4dp"
+        android:src="@drawable/hp_logo_32"
+        android:padding="10dp"
         />
 
-    <ImageView
-        android:id="@+id/res_image"
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        />
+        android:layout_marginTop="10dp"
+        >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/res_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:background="#ffffff"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="20dp"
+        >
 
-        <ImageButton
-            android:id="@+id/btn_print"
-            android:src="@drawable/printer_128"
-            android:text="Imprimir"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:attr/borderlessButtonStyle"/>
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true"
+            >
 
-        <ImageButton
-            android:id="@+id/btn_email"
-            android:src="@drawable/hp_btn_send_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?android:attr/borderlessButtonStyle"/>
+            <ImageButton
+                android:id="@+id/btn_print"
+                android:src="@drawable/printer_64"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/borderlessButtonStyle"/>
 
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/btn_email"
+                android:src="@drawable/hp_send_email_white_64"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                style="?android:attr/borderlessButtonStyle"/>
+
+            <ImageButton
+                android:id="@+id/btn_upload"
+                android:src="@drawable/hp_btn_upload_white_64"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                style="?android:attr/borderlessButtonStyle"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
 </LinearLayout>
 
 </ScrollView>

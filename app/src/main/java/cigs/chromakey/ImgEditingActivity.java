@@ -31,6 +31,7 @@ public class ImgEditingActivity extends AppCompatActivity
     ImageView imgView, bgView;
     private ActionMode mActionMode;
     private Handler mHandler;
+    private int screen_w, screen_h;
 
     //private static final int PROGRESS = 0x1;
     //private ProgressBar mProgress;
@@ -68,9 +69,13 @@ public class ImgEditingActivity extends AppCompatActivity
 
         //Log.i(TAG, "imgView:"+imgView.getDrawingCache().getWidth());
 
+        screen_w = 550;
+        screen_h = 550;
+
         // Colocar foto tomada en pantalla
         imageUri = extras.getParcelable("image");
-        mBitmap  = Utils.decodeSampledBitmapFromUri(this, imageUri, 550, 600);
+        mBitmap  = Utils.decodeSampledBitmapFromUri(this, imageUri, screen_w, screen_h);
+        imgView.setMaxWidth(600);
         imgView.setImageBitmap(mBitmap);
             //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
 
@@ -153,8 +158,8 @@ public class ImgEditingActivity extends AppCompatActivity
 
     protected Bitmap processImage(Bitmap fg_img, Bitmap bg_img){
         //fg_img = Bitmap.createScaledBitmap( fg_img, bg_img.getWidth(), bg_img.getHeight(), false );
-        cp_fg_img = Bitmap.createScaledBitmap( fg_img, 550, 600, false );
-        cp_bg_img = Bitmap.createScaledBitmap( bg_img, 550, 600, false );
+        cp_fg_img = Bitmap.createScaledBitmap( fg_img, screen_w, screen_h, false );
+        cp_bg_img = Bitmap.createScaledBitmap( bg_img, screen_w, screen_h, false );
 
         // Comprobar dimensiones
         /*if ( cp_fg_img.getWidth()  != cp_bg_img.getWidth() ||
@@ -187,10 +192,16 @@ public class ImgEditingActivity extends AppCompatActivity
         return mutableBitmap;
     }
 */
+
+    /**
+     * Menu Action Bar
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_img_editing, menu);
+        getMenuInflater().inflate(R.menu.menu_img_editing, menu);
         return true;
     }
 

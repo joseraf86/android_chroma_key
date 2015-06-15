@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">HP Photoboth</string>
+    <string name="app_name">HP Photobooth</string>
     <string name="title_img_editing">Definir Fondo</string>
     <string name="title_activity_sharing">Imprimir y Compartir Foto</string>
 

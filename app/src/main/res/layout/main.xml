@@ -3,21 +3,34 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context=".CameraPhotoCapture"
-    android:background="@drawable/hp_act1">
+    android:background="#000000">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/hp_logo_32"
+        android:padding="20dp"
+        />
 
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="100dp">
 
         <ImageView
-            android:id="@+id/banner"
+            android:src="@drawable/hp_app_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             />
+
     </LinearLayout>
+
+
 
     <ImageButton
         android:id="@+id/btn_capture"
@@ -27,6 +40,14 @@
         style="?android:attr/borderlessButtonStyle"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        />
+
+    <ImageView
+        android:src="@drawable/hp_credits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
         />
 
 
