@@ -30,7 +30,7 @@ public class SharingActivity extends AppCompatActivity
     private static final String TAG = SharingActivity.class.getName();
 
     ImageView imgView;
-    ImageButton btnEmail, btnPrint;
+    ImageButton btnEmail, btnPrint, btnUpload;
     Button btnShare;
     PrintHelper printer;
     Bitmap mBitmap, fBitmap;
@@ -95,6 +95,9 @@ public class SharingActivity extends AppCompatActivity
         btnPrint = (ImageButton) findViewById(R.id.btn_print);
         btnPrint.setOnClickListener(this);
 
+        btnUpload = (ImageButton) findViewById(R.id.btn_upload);
+        btnUpload.setOnClickListener(this);
+
     }
 
     public void onClick (View v)
@@ -112,9 +115,13 @@ public class SharingActivity extends AppCompatActivity
 
             // Cambiar esta imagen a la foto imgUri
             // Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.hp_banner);
-            //Uri tmp = Utils.getImageUri(getApplicationContext(), fBitmap);
+            // Uri tmp = Utils.getImageUri(getApplicationContext(), fBitmap);
             Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", imageViewUri, this);
             return;
+        }
+
+        if (v.getId() == R.id.btn_upload) {
+            Uploader.uploadChroma(imageViewUri);
         }
 
     }
