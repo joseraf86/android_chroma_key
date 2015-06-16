@@ -16,11 +16,8 @@ import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
-import java.io.FileNotFoundException;
 import java.util.regex.Pattern;
 
 
@@ -31,16 +28,16 @@ public class SharingActivity extends AppCompatActivity
 
     ImageView imgView;
     ImageButton btnEmail, btnPrint, btnUpload;
-    Button btnShare;
     PrintHelper printer;
-    Bitmap mBitmap, fBitmap;
+    Bitmap fBitmap;
     Uri imageUri, imageViewUri;
     int background_id;
 
     private String getUserEmail(Context context) {
 
+        Log.i(TAG, "getting user emails");
         Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
-        Account[] accounts = AccountManager.get(context).getAccounts();
+        Account[] accounts   = AccountManager.get(context).getAccounts();
         String email = "";
         for (Account account : accounts) {
             if (emailPattern.matcher(account.name).matches()) {
@@ -51,7 +48,7 @@ public class SharingActivity extends AppCompatActivity
         return email;
     }
 
-    private void processImage(){
+    private void processImage() {
         Bitmap tmp = Utils.decodeBitmapFromUri(this, imageUri);
         Bitmap bg = BitmapFactory.decodeResource(getResources(), background_id);
 
@@ -62,7 +59,7 @@ public class SharingActivity extends AppCompatActivity
         Bitmap fg  = Bitmap.createScaledBitmap(fgt, bg.getWidth(), bg.getHeight(), false);
 
         DIP dip = new DIP(60, 62, Color.rgb(17, 168, 75));
-        if (bg!=null && fg !=null) {
+        if (fg != null) {
             dip.chromaKey(fg, bg);
             fBitmap = fg;
         }
@@ -79,12 +76,14 @@ public class SharingActivity extends AppCompatActivity
 
         imgView = (ImageView) findViewById(R.id.res_image);
 
+        // se reciben recursos de la actividad anterior
         Intent i = getIntent();
         Bundle extras = i.getExtras();
-        imageUri = extras.getParcelable("res_image");
-        imageViewUri = extras.getParcelable("res_image_min");
+        imageUri      = extras.getParcelable("res_image");
+        imageViewUri  = extras.getParcelable("res_image_min");
         background_id = extras.getInt("bg_id");
 
+        // se visualiza la imagen pocesada
         Bitmap tmp = Utils.decodeBitmapFromUri(this, imageViewUri);
         imgView.setImageBitmap(tmp);//mBitmap
 
@@ -117,13 +116,11 @@ public class SharingActivity extends AppCompatActivity
             // Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.hp_banner);
             // Uri tmp = Utils.getImageUri(getApplicationContext(), fBitmap);
             Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", imageViewUri, this);
-            return;
         }
 
-        if (v.getId() == R.id.btn_upload) {
-            Uploader.uploadChroma(imageViewUri);
-        }
-
+        //if (v.getId() == R.id.btn_upload) {
+            //Uploader.uploadChroma(imageViewUri);
+        //}
     }
 
 
