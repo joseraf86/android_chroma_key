@@ -5,7 +5,7 @@ import android.widget.EditText;
 import java.util.regex.Pattern;
 
 /**
- * Created by usuario on 16/06/15.
+ *
  */
 public class Validation {
 
@@ -43,7 +43,7 @@ public class Validation {
         if (required && !Pattern.matches(regex, text)) {
             editText.setError(errMsg);
             return false;
-        };
+        }
 
         return true;
     }

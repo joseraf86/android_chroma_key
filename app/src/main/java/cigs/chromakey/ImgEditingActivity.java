@@ -1,6 +1,5 @@
 package cigs.chromakey;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ActionMode;
@@ -19,7 +17,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 
 
 public class ImgEditingActivity extends AppCompatActivity
@@ -75,7 +72,7 @@ public class ImgEditingActivity extends AppCompatActivity
         // Colocar foto tomada en pantalla
         imageUri = extras.getParcelable("image");
 
-        mBitmap  = Utils.decodeSampledBitmapFromUri(this, imageUri, screen_w, screen_h);;
+        mBitmap  = Utils.decodeSampledBitmapFromUri(this, imageUri, screen_w, screen_h);
 
 
 
@@ -110,18 +107,17 @@ public class ImgEditingActivity extends AppCompatActivity
 
     private void changeToIndex(int index, int resourceId) {
 
-        int i = index;
         last_bg_id = resourceId;
 
-        if(bgs[i] == null){
-            bgs[i] = BitmapFactory.decodeResource( getResources(),resourceId);
+        if(bgs[index] == null){
+            bgs[index] = BitmapFactory.decodeResource( getResources(),resourceId);
         }
-        bg_img = bgs[i];
-        if(cache[i] == null){
-            cache[i] = processImage(fg_img,bg_img);
+        bg_img = bgs[index];
+        if(cache[index] == null){
+            cache[index] = processImage(fg_img,bg_img);
         }
-        imgView.setImageBitmap(cache[i]);
-        dipped_img = cache[i];
+        imgView.setImageBitmap(cache[index]);
+        dipped_img = cache[index];
     }
 
     @Override
@@ -198,8 +194,8 @@ public class ImgEditingActivity extends AppCompatActivity
 
     /**
      * Menu Action Bar
-     * @param menu
-     * @return
+     * @param menu menu
+     * @return true
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

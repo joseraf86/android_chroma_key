@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.support.v4.print.PrintHelper;
 
 /**
- * Created by usuario on 4/06/15.
+ *
  */
 public class PrintingAndSharing {
 

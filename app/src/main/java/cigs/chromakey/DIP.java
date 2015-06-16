@@ -30,14 +30,6 @@ public class DIP {
     }
 
     /** A utility function to convert colors in RGB into YCbCr */
-    public static int rgb2y (int r, int g, int b)
-    {
-        int y;
-        y = (int) Math.round(0.299 * r + 0.587 * g + 0.114 * b);
-        return y;
-    }
-
-    /** A utility function to convert colors in RGB into YCbCr */
     public static int rgb2cb (int r, int g, int b)
     {
         int cb;
@@ -67,9 +59,8 @@ public class DIP {
     /** Chroma Key Algorithm */
     public void chromaKey( Bitmap fg, Bitmap bg ) {
         double mask;
-        int final_pixel;
         int cb_key, cr_key;
-        int pxout_red, pxout_green, pxout_blue;
+        //int pxout_red, pxout_green, pxout_blue;
 
         this.fg = fg;
         this.bg = bg;
@@ -109,10 +100,10 @@ public class DIP {
                         Log.i(TAG, "i "+i+ " j"+j);
                         return;
                     }
-                }else{
-                    if (mask == 0) {
+                }//else{
+                    //if (mask == 0) {
 
-                    }else{
+                    //}else{
                         /*fg.setPixel(i, j, fg.getPixel(i,j) );
                         pxout_red    = (int) ( Color.red(fg.getPixel(i,j))
                                                - mask*Color.red(chroma_key)
@@ -136,8 +127,8 @@ public class DIP {
                                 + Color.blue(bg.getPixel(i,j))*mask );
                         */
                         //fg.setPixel(i, j, Color.rgb(pxout_red, pxout_green, pxout_blue) ); // final_pixel
-                    }
-                }
+                    //}
+                //}
 
                 // final_pixel = (int) Math.round( fg.getPixel(i,j) - mask*chroma_key + bg.getPixel(i,j)*mask );
 

@@ -4,7 +4,6 @@ package cigs.chromakey;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -17,8 +16,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.InputStream;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.i(TAG, "create");
         mHandler = new Handler();
 /*
         try {

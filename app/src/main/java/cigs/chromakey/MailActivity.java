@@ -1,34 +1,31 @@
 package cigs.chromakey;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import java.util.regex.Pattern;
+import cigs.chromakey.models.Mail;
+
+
 
 public class MailActivity extends AppCompatActivity {
 
     private static final String TAG = MailActivity.class.getName();
-    private EditText etEmailAddrss;
 
-    Uri imageUri;
+    private EditText etEmailAddrss;
+    private Mail mail;
+    private Uri imageUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,33 +46,61 @@ public class MailActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count){}
         });
 
+        mail = new Mail();
+        mail.setSubject("HP Chroma photo stand");
+        mail.setBody("HP Chroma photo stand");
+        mail.attach(imageUri);
+
+    }
+
+    // compose
+    public void accept() {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL,   mail.getTo());
+        intent.putExtra(Intent.EXTRA_SUBJECT, mail.getSubject());
+        intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(mail.getBody() + "<br/>Gracias por preferirnos"));
+        // Colocamos el adjunto en el stream
+        intent.putExtra(Intent.EXTRA_STREAM, mail.getAttachment());
+
+        // Indicamos el MIME type
+        // intent.setType("image/jpeg");
+
+        try {
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        } catch (android.content.ActivityNotFoundException ex){
+            Toast.makeText(this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onClick (View v)
     {
-        if (v.getId() == R.id.btn_email) {
+        Log.i(TAG, "evento click");
+        if (v.getId() == R.id.btn) {
+            String[] emails = {etEmailAddrss.getText().toString()};
+            mail.setTo(emails);
+
+            Eula.showEula(this, emails, imageUri);
+
             // Enviar comEditrreo al usuario
             //getUserEmail(getApplicationContext())
-            String str = etEmailAddrss.getText().toString();
 
-            if ( !str.isEmpty() ) {
-                String[] emails = {etEmailAddrss.getText().toString()};
-                Eula.showEula(this);
+            //if ( !str.isEmpty() ) {
 
                 // Cambiar esta imagen a la foto imgUri
                 // Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.hp_banner);
                 // Uri tmp = Utils.getImageUri(getApplicationContext(), fBitmap);
-                Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", imageUri, this);
-            }
 
-
+           // }
         }
 
         //if (v.getId() == R.id.btn_upload) {
         //Uploader.uploadChroma(imageViewUri);
         //}
     }
-
+/*
     private String getUserEmail(Context context) {
 
         Log.i(TAG, "getting user emails");
@@ -90,7 +115,7 @@ public class MailActivity extends AppCompatActivity {
         }
         return email;
     }
-
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

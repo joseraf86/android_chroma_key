@@ -1,26 +1,20 @@
 package cigs.chromakey;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.v4.print.PrintHelper;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import java.util.regex.Pattern;
 
 
 public class SharingActivity extends AppCompatActivity
@@ -34,15 +28,14 @@ public class SharingActivity extends AppCompatActivity
     Bitmap fBitmap;
     Uri imageUri, imageViewUri;
     int background_id;
-    private Handler mHandler;
-
 
 
     private void processImage() {
-        Bitmap tmp = Utils.decodeBitmapFromUri(this, imageUri);
-        Bitmap bg = BitmapFactory.decodeResource(getResources(), background_id);
+        Log.i(TAG, "processing image");
 
-        imgView = (ImageView) findViewById(R.id.res_image);
+        Bitmap tmp = Utils.decodeBitmapFromUri(this, imageUri);
+        Bitmap bg  = BitmapFactory.decodeResource(getResources(), background_id);
+        imgView    = (ImageView) findViewById(R.id.res_image);
 
         // se necesita q el bitmap sea mutable para poder cambiarle el fondo
         Bitmap fgt = tmp.copy(Bitmap.Config.ARGB_8888, true);
@@ -86,7 +79,6 @@ public class SharingActivity extends AppCompatActivity
 
         btnUpload = (ImageButton) findViewById(R.id.btn_upload);
         btnUpload.setOnClickListener(this);
-
     }
 
     public void onClick (View v)
@@ -99,18 +91,8 @@ public class SharingActivity extends AppCompatActivity
         }
 
         if (v.getId() == R.id.btn_email) {
-            // Enviar correo al usuario
-            //String[] emails = {getUserEmail(getApplicationContext())};
-
-            // Cambiar esta imagen a la foto imgUri
-            // Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.hp_banner);
-            // Uri tmp = Utils.getImageUri(getApplicationContext(), fBitmap);
-            //Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", imageViewUri, this);
-
-            //mHandler.postDelayed(mLaunchLevel3Task, 0);
-
+            // Se pasa a mail activity
             Intent myIntent = new Intent(SharingActivity.this, MailActivity.class);
-            //myIntent.putExtra("res_image_min", tmp);
             myIntent.putExtra("res_image", imageViewUri);
             SharingActivity.this.startActivity(myIntent);
         }
@@ -118,6 +100,9 @@ public class SharingActivity extends AppCompatActivity
         //if (v.getId() == R.id.btn_upload) {
             //Uploader.uploadChroma(imageViewUri);
         //}
+        // Cambiar esta imagen a la foto imgUri
+        // Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.hp_banner);
+        // Uri tmp = Utils.getImageUri(getApplicationContext(), fBitmap);
     }
 
 
@@ -136,18 +121,8 @@ public class SharingActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         //int id = item.getItemId();
 
-
-
         return super.onOptionsItemSelected(item);
     }
-
-    private Runnable mLaunchLevel3Task = new Runnable() {
-        public void run() {
-
-
-
-        }
-    };
 
 
 }

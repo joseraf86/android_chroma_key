@@ -1,7 +1,6 @@
 package cigs.chromakey;
 
 import android.net.Uri;
-import android.os.Environment;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -13,7 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 
 /**
- * Created by shadowfax on 6/15/15.
+ *
  */
 public class Uploader {
 
