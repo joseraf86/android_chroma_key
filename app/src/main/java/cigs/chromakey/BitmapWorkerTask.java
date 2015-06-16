@@ -3,15 +3,15 @@ package cigs.chromakey;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.widget.ImageView;
-import java.lang.ref.WeakReference;
+import android.util.Log;
 
 /**
- * Created by shadowfax on 6/11/15.
+ *
  */
 class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
+    private static final String TAG = BitmapWorkerTask.class.getName();
     //private final WeakReference<ImageView> imageViewReference;
-    private int data = 0;
+    //private int data = 0;
     private DIP dip;
     private Bitmap fg_img;
     private Bitmap bg_img;
@@ -22,6 +22,7 @@ class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
         dip = new DIP(60, 62, Color.rgb(17, 168, 75));
         this.fg_img = fg_img;
         this.bg_img = bg_img;
+        Log.i(TAG, "");
     }
 
     // Decode image in background.

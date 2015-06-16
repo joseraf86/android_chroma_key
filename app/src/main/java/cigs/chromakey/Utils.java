@@ -37,6 +37,7 @@ public class Utils {
             // height and width larger than the requested height and width.
             while ((halfHeight / inSampleSize) > reqHeight
                     && (halfWidth / inSampleSize) > reqWidth) {
+                //Log.i(TAG, "height: "+halfHeight / inSampleSize);
                 inSampleSize *= 2;
             }
         }
@@ -51,6 +52,7 @@ public class Utils {
         InputStream in = null;
         final BitmapFactory.Options options;
 
+
         try {
             // First decode with inJustDecodeBounds=true to check dimensions
             in = act.getContentResolver().openInputStream(uri);
@@ -61,7 +63,7 @@ public class Utils {
 
             // Calculate inSampleSize
             options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-            Log.i(TAG, "Sample Size: "+options.inSampleSize);
+
 
             // Decode bitmap with inSampleSize set
             options.inJustDecodeBounds = false;

@@ -4,5 +4,14 @@
     <string name="app_name">HP Photobooth</string>
     <string name="title_img_editing">Definir Fondo</string>
     <string name="title_activity_sharing">Imprimir y Compartir Foto</string>
+    <string name="title_activity_mail">Enviar foto al correo</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
+
+    <string name="eula_title">Declaracíon de privacidad</string>
+    <string name="txt_refuse">Rechazar</string>
+
+    <string name="disclaimer_title">Disclaimer</string>
+    <string name="txt_accept">Aceptar</string>
 </resources>

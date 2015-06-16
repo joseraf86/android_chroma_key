@@ -6,26 +6,25 @@
     tools:context="cigs.chromakey.ImgEditingActivity" tools:ignore="MergeRootFrame" >
 
     <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/hp_logo_32"
-            android:padding="10dp"
-            />
+        android:contentDescription="HP Logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/hp_logo_32"
+        android:padding="5dp"
+        />
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         >
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="612px"
+        android:layout_height="816px"
         android:layout_weight="1"
         android:id="@+id/image"
         android:layout_centerHorizontal="true"
-        android:padding="6dp"
+        android:padding="4dp"
         android:background="#ffffff"
         />
 

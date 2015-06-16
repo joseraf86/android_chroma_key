@@ -4,21 +4,28 @@ package cigs.chromakey;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public class MainActivity extends AppCompatActivity {
 
     Uri imageUri = null;
+    private static final String TAG = MainActivity.class.getName();
     final static int CAPTURE_IMAGE_REQUEST_CODE = 1;
+    //private static final String TAG = MainActivity.class.getName();
 
     private Handler mHandler;
 
@@ -27,6 +34,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mHandler = new Handler();
+/*
+        try {
+            InputStream in = getResources().getAssets().open("hp_btn_next.png");
+
+        }
+         catch (IOException e)  {
+             Log.i(TAG,"no");
+         }
+*/
 
         setContentView(R.layout.main);
 

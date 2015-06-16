@@ -69,15 +69,18 @@ public class ImgEditingActivity extends AppCompatActivity
 
         //Log.i(TAG, "imgView:"+imgView.getDrawingCache().getWidth());
 
-        screen_w = 550;
-        screen_h = 550;
+        screen_w = 612;
+        screen_h = 816;
 
         // Colocar foto tomada en pantalla
         imageUri = extras.getParcelable("image");
-        mBitmap  = Utils.decodeSampledBitmapFromUri(this, imageUri, screen_w, screen_h);
-        imgView.setMaxWidth(600);
+
+        mBitmap  = Utils.decodeSampledBitmapFromUri(this, imageUri, screen_w, screen_h);;
+
+
+
+
         imgView.setImageBitmap(mBitmap);
-            //mBitmap = Bitmap.createScaledBitmap(mBitmap, 500, 750, false);
 
         // Cargar fondos
         bgs[0] = BitmapFactory.decodeResource( getResources(), R.drawable.background_1);

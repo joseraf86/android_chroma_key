@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v4.print.PrintHelper;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
 import java.util.regex.Pattern;
 
 
@@ -32,21 +34,9 @@ public class SharingActivity extends AppCompatActivity
     Bitmap fBitmap;
     Uri imageUri, imageViewUri;
     int background_id;
+    private Handler mHandler;
 
-    private String getUserEmail(Context context) {
 
-        Log.i(TAG, "getting user emails");
-        Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
-        Account[] accounts   = AccountManager.get(context).getAccounts();
-        String email = "";
-        for (Account account : accounts) {
-            if (emailPattern.matcher(account.name).matches()) {
-                email = account.name;
-                break;
-            }
-        }
-        return email;
-    }
 
     private void processImage() {
         Bitmap tmp = Utils.decodeBitmapFromUri(this, imageUri);
@@ -110,12 +100,19 @@ public class SharingActivity extends AppCompatActivity
 
         if (v.getId() == R.id.btn_email) {
             // Enviar correo al usuario
-            String[] emails = {getUserEmail(getApplicationContext())};
+            //String[] emails = {getUserEmail(getApplicationContext())};
 
             // Cambiar esta imagen a la foto imgUri
             // Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.hp_banner);
             // Uri tmp = Utils.getImageUri(getApplicationContext(), fBitmap);
-            Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", imageViewUri, this);
+            //Mailer.composeEmail(emails, "HP Chroma photo stand", "HP Chroma photo stand", imageViewUri, this);
+
+            //mHandler.postDelayed(mLaunchLevel3Task, 0);
+
+            Intent myIntent = new Intent(SharingActivity.this, MailActivity.class);
+            //myIntent.putExtra("res_image_min", tmp);
+            myIntent.putExtra("res_image", imageViewUri);
+            SharingActivity.this.startActivity(myIntent);
         }
 
         //if (v.getId() == R.id.btn_upload) {
@@ -143,6 +140,14 @@ public class SharingActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    private Runnable mLaunchLevel3Task = new Runnable() {
+        public void run() {
+
+
+
+        }
+    };
 
 
 }
