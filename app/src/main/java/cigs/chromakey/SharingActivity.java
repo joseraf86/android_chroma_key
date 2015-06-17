@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import cigs.chromakey.models.DIP;
 
 
 public class SharingActivity extends Activity

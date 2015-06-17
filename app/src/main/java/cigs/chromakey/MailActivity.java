@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import cigs.chromakey.models.Mail;
-
+import cigs.chromakey.models.Validation;
 
 
 public class MailActivity extends Activity {
@@ -31,16 +31,21 @@ public class MailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mail);
 
-        // se reciben recursos de la actividad anterior
+        // Se reciben recursos de la actividad anterior
         Intent i = getIntent();
         Bundle extras = i.getExtras();
         imageUri = extras.getParcelable("res_image");
 
-        etEmailAddrss    = (EditText) findViewById(R.id.edittext);
+        etEmailAddrss = (EditText) findViewById(R.id.edittext);
         etEmailAddrss.addTextChangedListener(new TextWatcher() {
-            // after every change has been made to this editText, we would like to check validity
+            // After every change has been made to this editText, we would like to check validity
             public void afterTextChanged(Editable s) {
-                Validation.isEmailAddress(etEmailAddrss, true);
+                String email = etEmailAddrss.getText().toString().trim();
+                // clearing the error, if it was previously set by some other values
+                etEmailAddrss.setError(null);
+                if (!Validation.isEmailAddress(email, true)){
+                    etEmailAddrss.setError(Validation.ERR_EMAIL_MSG);
+                }
             }
             public void beforeTextChanged(CharSequence s, int start, int count, int after){}
             public void onTextChanged(CharSequence s, int start, int before, int count){}
@@ -53,7 +58,7 @@ public class MailActivity extends Activity {
 
     }
 
-    // compose
+    // Compose
     public void accept() {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:")); // only email apps should handle this
@@ -65,7 +70,6 @@ public class MailActivity extends Activity {
 
         // Indicamos el MIME type
         // intent.setType("image/jpeg");
-
         try {
             if (intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(intent);

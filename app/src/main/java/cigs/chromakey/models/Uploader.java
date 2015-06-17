@@ -1,4 +1,4 @@
-package cigs.chromakey;
+package cigs.chromakey.models;
 
 import android.net.Uri;
 

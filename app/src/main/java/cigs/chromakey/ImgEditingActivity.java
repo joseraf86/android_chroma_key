@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import cigs.chromakey.models.BitmapWorkerTask;
+import cigs.chromakey.models.DIP;
 
 
 public class ImgEditingActivity extends Activity

@@ -1,4 +1,4 @@
-package cigs.chromakey;
+package cigs.chromakey.models;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -8,7 +8,7 @@ import android.util.Log;
 /**
  *
  */
-class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
+public class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
     private static final String TAG = BitmapWorkerTask.class.getName();
     //private final WeakReference<ImageView> imageViewReference;
     //private int data = 0;

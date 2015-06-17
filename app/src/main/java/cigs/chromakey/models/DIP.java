@@ -1,4 +1,4 @@
-package cigs.chromakey;
+package cigs.chromakey.models;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -14,7 +14,7 @@ public class DIP {
     private static final String TAG = DIP.class.getName();
 
     // Foreground fg and Background bg picture
-    Bitmap fg, bg;
+    public Bitmap fg, bg;
 
     // Tolerance [tola; tolb]
     int tola, tolb;
