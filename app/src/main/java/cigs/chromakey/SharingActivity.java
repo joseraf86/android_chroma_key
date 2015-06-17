@@ -1,5 +1,6 @@
 package cigs.chromakey;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,7 +8,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.print.PrintHelper;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +17,7 @@ import android.widget.ImageView;
 
 
 
-public class SharingActivity extends AppCompatActivity
+public class SharingActivity extends Activity
     implements View.OnClickListener {
 
     private static final String TAG = SharingActivity.class.getName();
