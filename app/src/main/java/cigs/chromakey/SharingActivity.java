@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v4.print.PrintHelper;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,10 +16,13 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
 
 
 public class SharingActivity extends AppCompatActivity
     implements View.OnClickListener {
+
+    private String url = "http://192.168.1.45/gallery/gallery.php";
 
     private static final String TAG = SharingActivity.class.getName();
 
@@ -37,7 +41,7 @@ public class SharingActivity extends AppCompatActivity
         Bitmap bg  = BitmapFactory.decodeResource(getResources(), background_id);
         imgView    = (ImageView) findViewById(R.id.res_image);
 
-        // se necesita q el bitmap sea mutable para poder cambiarle el fondo
+        // Se necesita q el bitmap sea mutable para poder cambiarle el fondo
         Bitmap fgt = tmp.copy(Bitmap.Config.ARGB_8888, true);
         Bitmap fg  = Bitmap.createScaledBitmap(fgt, bg.getWidth(), bg.getHeight(), false);
 
@@ -59,14 +63,14 @@ public class SharingActivity extends AppCompatActivity
 
         imgView = (ImageView) findViewById(R.id.res_image);
 
-        // se reciben recursos de la actividad anterior
+        // Se reciben recursos de la actividad anterior
         Intent i = getIntent();
         Bundle extras = i.getExtras();
         imageUri      = extras.getParcelable("res_image");
         imageViewUri  = extras.getParcelable("res_image_min");
         background_id = extras.getInt("bg_id");
 
-        // se visualiza la imagen pocesada
+        // Se visualiza la imagen pocesada
         Bitmap tmp = Utils.decodeBitmapFromUri(this, imageViewUri);
         imgView.setImageBitmap(tmp);//mBitmap
 
@@ -97,12 +101,13 @@ public class SharingActivity extends AppCompatActivity
             SharingActivity.this.startActivity(myIntent);
         }
 
-        //if (v.getId() == R.id.btn_upload) {
-            //Uploader.uploadChroma(imageViewUri);
-        //}
-        // Cambiar esta imagen a la foto imgUri
-        // Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.hp_banner);
-        // Uri tmp = Utils.getImageUri(getApplicationContext(), fBitmap);
+        if (v.getId() == R.id.btn_upload) {
+            SendHttpRequestTask t = new SendHttpRequestTask();
+
+            String[] params = new String[]{url, "hola", "mundo"};
+            t.execute(params);
+        }
+
     }
 
 
@@ -119,9 +124,49 @@ public class SharingActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        //int id = item.getItemId();
+        // int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private class SendHttpRequestTask extends AsyncTask<String, Void, String> {
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            String url = params[0];
+            String param1 = params[1];
+            String param2 = params[2];
+            String data = "No Response from the Server";
+            Bitmap b = BitmapFactory.decodeFile("/sdcard/Download/drawing.jpg");
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            b.compress(Bitmap.CompressFormat.PNG, 0, baos);
+
+            try {
+                FileUploader client = new FileUploader(url);
+                client.connectForMultipart();
+                client.addFormPart("name", "fileToUpload");
+                client.addFilePart("fileToUpload", "drawing.png", baos.toByteArray());
+                client.finishMultipart();
+                data = client.getResponse();
+            }
+            catch(Throwable t) {
+                t.printStackTrace();
+            }
+
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String data) {
+            // TODO Poner un mensaje del Toast para que el usuario sepa el estado del upload
+            Log.i("TAG-SERVER RESPONSE", data);
+
+        }
+
+
+
     }
 
 
