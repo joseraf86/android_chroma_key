@@ -1,5 +1,6 @@
 package cigs.chromakey;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,7 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -15,11 +16,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import cigs.chromakey.models.BitmapWorkerTask;
+import cigs.chromakey.models.DIP;
 
 
-public class ImgEditingActivity extends AppCompatActivity
+public class ImgEditingActivity extends Activity
             implements View.OnClickListener
 {
     private static final String TAG = ImgEditingActivity.class.getName();
@@ -45,6 +49,8 @@ public class ImgEditingActivity extends AppCompatActivity
     Bitmap bgs[] = new Bitmap[10];
     Bitmap cache[] = new Bitmap[10];
 
+    ListView imglist;
+
     int last_bg_id;
 
 
@@ -64,7 +70,6 @@ public class ImgEditingActivity extends AppCompatActivity
         Intent i = getIntent();
         Bundle extras = i.getExtras();
 
-        //Log.i(TAG, "imgView:"+imgView.getDrawingCache().getWidth());
 
         screen_w = 612;
         screen_h = 816;
@@ -75,6 +80,8 @@ public class ImgEditingActivity extends AppCompatActivity
         mBitmap  = Utils.decodeSampledBitmapFromUri(this, imageUri, screen_w, screen_h);
 
 
+        // ListView
+        imglist = (ListView) findViewById(R.id.imglist);
 
 
         imgView.setImageBitmap(mBitmap);

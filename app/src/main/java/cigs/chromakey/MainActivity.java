@@ -2,13 +2,13 @@ package cigs.chromakey;
 
 
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,9 +16,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.net.URL;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     Uri imageUri = null;
     private static final String TAG = MainActivity.class.getName();
@@ -41,7 +42,12 @@ public class MainActivity extends AppCompatActivity {
              Log.i(TAG,"no");
          }
 */
-
+/*
+        URL fileURL = getClass().getClassLoader().getResource("hp_app_icon");
+        String fileName = fileURL.getFile();
+        String filePath = fileURL.getPath();
+        Log.i(TAG,"+*+*+*+*+* "+filePath);
+*/
         setContentView(R.layout.main);
 
         final ImageButton boton = (ImageButton) findViewById(R.id.btn_capture);

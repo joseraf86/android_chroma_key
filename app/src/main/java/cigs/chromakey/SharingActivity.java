@@ -1,5 +1,6 @@
 package cigs.chromakey;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,21 +9,18 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.print.PrintHelper;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
 import java.io.ByteArrayOutputStream;
+import cigs.chromakey.models.DIP;
 
 
-public class SharingActivity extends AppCompatActivity
+public class SharingActivity extends Activity
     implements View.OnClickListener {
-
-    private String url = "http://192.168.1.45/gallery/gallery.php";
 
     private static final String TAG = SharingActivity.class.getName();
 
@@ -40,9 +38,13 @@ public class SharingActivity extends AppCompatActivity
         Bitmap tmp = Utils.decodeBitmapFromUri(this, imageUri);
         Bitmap bg  = BitmapFactory.decodeResource(getResources(), background_id);
         imgView    = (ImageView) findViewById(R.id.res_image);
+        Bitmap fgt = null;
 
         // Se necesita q el bitmap sea mutable para poder cambiarle el fondo
-        Bitmap fgt = tmp.copy(Bitmap.Config.ARGB_8888, true);
+        if (tmp != null){
+            fgt = tmp.copy(Bitmap.Config.ARGB_8888, true);
+        }
+
         Bitmap fg  = Bitmap.createScaledBitmap(fgt, bg.getWidth(), bg.getHeight(), false);
 
         DIP dip = new DIP(60, 62, Color.rgb(17, 168, 75));
@@ -104,6 +106,7 @@ public class SharingActivity extends AppCompatActivity
         if (v.getId() == R.id.btn_upload) {
             SendHttpRequestTask t = new SendHttpRequestTask();
 
+            String url = "http://192.168.1.45/gallery/gallery.php";
             String[] params = new String[]{url, "hola", "mundo"};
             t.execute(params);
         }
@@ -135,13 +138,17 @@ public class SharingActivity extends AppCompatActivity
         @Override
         protected String doInBackground(String... params) {
             String url = params[0];
-            String param1 = params[1];
-            String param2 = params[2];
+            //String param1 = params[1];
+            //String param2 = params[2];
             String data = "No Response from the Server";
-            Bitmap b = BitmapFactory.decodeFile("/sdcard/Download/drawing.jpg");
+
+            Bitmap b = Utils.decodeBitmapFromUri( SharingActivity.this, imageViewUri );
+            //        BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath()+
+            //                "/sdcard/Download/drawing.jpg");
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            b.compress(Bitmap.CompressFormat.PNG, 0, baos);
+            if (b!=null)
+                b.compress(Bitmap.CompressFormat.PNG, 0, baos);
 
             try {
                 FileUploader client = new FileUploader(url);

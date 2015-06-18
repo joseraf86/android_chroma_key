@@ -19,7 +19,9 @@ public class FileUploader {
         this.url = url;
     }
 
+    @SuppressWarnings("unused")
     public byte[] downloadImage(String imgName) {
+        Log.i(TAG, "downloading image...");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             System.out.println("URL ["+url+"] - Name ["+imgName+"]");
@@ -79,7 +81,7 @@ public class FileUploader {
     public String getResponse() throws Exception {
         InputStream is = connection.getInputStream();
         byte[] b1 = new byte[1024];
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         while ( is.read(b1) != -1)
             buffer.append(new String(b1));
@@ -92,7 +94,7 @@ public class FileUploader {
     private void writeParamData(String paramName, String value) throws Exception {
         outputStream.write((delimiter + boundary + "\r\n").getBytes());
         outputStream.write("Content-Type: text/plain\r\n".getBytes());
-        outputStream.write(("Content-Disposition: form-data; name=\"" + paramName + "\"\r\n").getBytes());;
+        outputStream.write(("Content-Disposition: form-data; name=\"" + paramName + "\"\r\n").getBytes());
         outputStream.write(("\r\n" + value + "\r\n").getBytes());
     }
 }
