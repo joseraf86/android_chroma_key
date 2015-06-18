@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import cigs.chromakey.models.BitmapWorkerTask;
@@ -48,6 +49,8 @@ public class ImgEditingActivity extends Activity
     Bitmap bgs[] = new Bitmap[10];
     Bitmap cache[] = new Bitmap[10];
 
+    ListView imglist;
+
     int last_bg_id;
 
 
@@ -67,7 +70,6 @@ public class ImgEditingActivity extends Activity
         Intent i = getIntent();
         Bundle extras = i.getExtras();
 
-        //Log.i(TAG, "imgView:"+imgView.getDrawingCache().getWidth());
 
         screen_w = 612;
         screen_h = 816;
@@ -78,6 +80,8 @@ public class ImgEditingActivity extends Activity
         mBitmap  = Utils.decodeSampledBitmapFromUri(this, imageUri, screen_w, screen_h);
 
 
+        // ListView
+        imglist = (ListView) findViewById(R.id.imglist);
 
 
         imgView.setImageBitmap(mBitmap);

@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.net.URL;
 
 
 public class MainActivity extends Activity {
@@ -41,7 +42,12 @@ public class MainActivity extends Activity {
              Log.i(TAG,"no");
          }
 */
-
+/*
+        URL fileURL = getClass().getClassLoader().getResource("hp_app_icon");
+        String fileName = fileURL.getFile();
+        String filePath = fileURL.getPath();
+        Log.i(TAG,"+*+*+*+*+* "+filePath);
+*/
         setContentView(R.layout.main);
 
         final ImageButton boton = (ImageButton) findViewById(R.id.btn_capture);
