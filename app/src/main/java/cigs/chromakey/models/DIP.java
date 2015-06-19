@@ -56,7 +56,8 @@ public class DIP {
         return (1.0);
     }
 
-    /** Chroma Key Algorithm */
+    /** Chroma Key Algorithm
+     *  Los bitmaps deben ser mutables para poder realizar el procesado */
     public void chromaKey( Bitmap fg, Bitmap bg ) {
         double mask;
         int cb_key, cr_key;
@@ -87,7 +88,6 @@ public class DIP {
                 int cr_p = rgb2cr(Color.red(fg.getPixel(i,j)),
                                   Color.green(fg.getPixel(i,j)),
                                   Color.blue(fg.getPixel(i,j)));
-                //Log.i("DIP:: c/ i,j cb, cr: ", "("+i+","+j+")"+cb_p+", "+cr_p);
 
                 mask = colorClose(cb_p, cr_p, cb_key, cr_key);
                 mask = 1.0 - mask;

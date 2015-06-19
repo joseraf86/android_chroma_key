@@ -2,7 +2,6 @@ package cigs.chromakey;
 
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,7 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Created by usuario on 5/06/15.
+ *
  */
 public class Utils {
 
@@ -49,10 +48,9 @@ public class Utils {
     /** */
     public static Bitmap decodeSampledBitmapFromUri(Activity act, Uri uri,
                                                     int reqWidth, int reqHeight) {
-        Bitmap tmp = null;
-        InputStream in = null;
+        Bitmap tmp;
+        InputStream in;
         final BitmapFactory.Options options;
-
 
         try {
             // First decode with inJustDecodeBounds=true to check dimensions
@@ -73,6 +71,7 @@ public class Utils {
             tmp = BitmapFactory.decodeStream(in, null, options);
 
             in.close();
+            return tmp;
 
         }
         catch(IOException e){
@@ -80,29 +79,26 @@ public class Utils {
             return null;
         }
 
-        return tmp;
+
     }
 
 
 
     public static Bitmap decodeBitmapFromUri(Activity act, Uri uri) {
-        Bitmap tmp = null;
-        InputStream in = null;
-        final BitmapFactory.Options options;
+        Bitmap tmp;
+        InputStream in;
 
         try {
             in = act.getContentResolver().openInputStream(uri);
             tmp = BitmapFactory.decodeStream(in);
 
             in.close();
-
+            return tmp;
         }
         catch(IOException e){
             Log.e(TAG, e.getMessage(), e);
             return null;
         }
-
-        return tmp;
     }
 
     public static Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -127,6 +123,8 @@ public class Utils {
                 os.write(bytes, 0, count);
             }
         }
-        catch(Exception ex){}
+        catch(Exception ex){
+            Log.e(TAG, ex.getMessage());
+        }
     }
 }

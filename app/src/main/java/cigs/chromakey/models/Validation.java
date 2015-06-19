@@ -15,7 +15,6 @@ public class Validation {
     //private static final String PHONE_REGEX = "\\d{3}-\\d{7}";
 
     // Error Messages
-    private static final String REQUIRED_MSG = "requerido";
     public static final String ERR_EMAIL_MSG = "email invalido";
     //private static final String PHONE_MSG = "###-#######";
 
@@ -43,19 +42,4 @@ public class Validation {
         return true;
     }
 
-    // check the input field has any text or not
-    // return true if it contains text otherwise false
-    public static boolean hasText(EditText editText) {
-
-        String text = editText.getText().toString().trim();
-        editText.setError(null);
-
-        // length 0 means there is no text
-        if (text.length() == 0) {
-            editText.setError(REQUIRED_MSG);
-            return false;
-        }
-
-        return true;
-    }
 }
