@@ -15,8 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import java.io.ByteArrayOutputStream;
 import cigs.chromakey.models.DIP;
+import cigs.chromakey.models.FileUploader;
 
 
 public class SharingActivity extends Activity
@@ -107,7 +110,7 @@ public class SharingActivity extends Activity
             SendHttpRequestTask t = new SendHttpRequestTask();
 
             String url = "http://192.168.1.45/gallery/gallery.php";
-            String[] params = new String[]{url, "hola", "mundo"};
+            String[] params = new String[]{url, "fileToUpload", "HP_photoboot.jpeg"};
             t.execute(params);
         }
 
@@ -134,12 +137,11 @@ public class SharingActivity extends Activity
 
     private class SendHttpRequestTask extends AsyncTask<String, Void, String> {
 
-
         @Override
         protected String doInBackground(String... params) {
             String url = params[0];
-            //String param1 = params[1];
-            //String param2 = params[2];
+            String param1 = params[1];
+            String param2 = params[2];
             String data = "No Response from the Server";
 
             Bitmap b = Utils.decodeBitmapFromUri( SharingActivity.this, imageViewUri );
@@ -153,26 +155,27 @@ public class SharingActivity extends Activity
             try {
                 FileUploader client = new FileUploader(url);
                 client.connectForMultipart();
-                client.addFormPart("name", "fileToUpload");
-                client.addFilePart("fileToUpload", "drawing.png", baos.toByteArray());
+                // client.addFormPart("name", "fileToUpload");
+                client.addFilePart(param1, param2, baos.toByteArray());
                 client.finishMultipart();
                 data = client.getResponse();
             }
             catch(Throwable t) {
                 t.printStackTrace();
             }
-
+            Log.i(TAG, "XXX"+data);
             return data;
         }
 
         @Override
         protected void onPostExecute(String data) {
-            // TODO Poner un mensaje del Toast para que el usuario sepa el estado del upload
-            Log.i("TAG-SERVER RESPONSE", data);
+            if (data.equals("0"))
+                Toast.makeText(getApplicationContext(), "Foto subida exitosamente", Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(getApplicationContext(), "No se pudo subir la foto", Toast.LENGTH_LONG).show();
 
+            //Log.i(TAG, data);
         }
-
-
 
     }
 
